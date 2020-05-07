@@ -25,7 +25,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="157.0" layoutY="208.0" mnemonicParsing="false" onAction="#interfaceModifierUtilisateur" prefHeight="42.0" prefWidth="378.0" styleClass="Button" text="Modifier/Supprimer Un Contrat">
+      <Button layoutX="157.0" layoutY="208.0" mnemonicParsing="false" onAction="#interfaceModifierContrat" prefHeight="42.0" prefWidth="378.0" styleClass="Button" text="Modifier/Supprimer Un Contrat">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
@@ -33,7 +33,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="161.0" layoutY="362.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="378.0" styleClass="Button" text="Afficher les informations d'un contrat">
+      <Button layoutX="161.0" layoutY="362.0" mnemonicParsing="false" onAction="#interfaceInfosContrat" prefHeight="38.0" prefWidth="378.0" styleClass="Button" text="Afficher les informations d'un contrat">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>
@@ -57,7 +57,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Button layoutX="161.0" layoutY="289.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="378.0" styleClass="Button" text="Les contrats par ordre décroissant de la date">
+      <Button layoutX="161.0" layoutY="289.0" mnemonicParsing="false" onAction="#interfaceContratDecroissance" prefHeight="38.0" prefWidth="378.0" styleClass="Button" text="Les contrats par ordre décroissant de la date">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>

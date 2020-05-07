@@ -6,6 +6,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +17,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 public class GestionContrat {
 
@@ -30,8 +36,17 @@ public class GestionContrat {
 	@FXML
 	private DatePicker dateEcheance;
 	
+	// Table d'affichage
+		@FXML
+		private TableView<Contrat> tableview;
+		@FXML
+		private TableColumn<Contrat,String> code;
+		@FXML
+		private TableColumn<Contrat,?> dateC;
+		@FXML
+		private TableColumn<Contrat,?> dateE;
 	
-	
+		
 	public void exitButton() {
 		Main.stage.close();
 	}
@@ -104,7 +119,7 @@ public class GestionContrat {
 		}
 	}
 	
-	public void interfaceModifierUtilisateur(ActionEvent e) throws IOException {
+	public void interfaceModifierContrat(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ModifierContrat.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
 		root.setOnMouseDragged(Main.handlerDragged);
@@ -185,6 +200,47 @@ public class GestionContrat {
 		alert.setTitle("Succès");
 		alert.setHeaderText("L'utilisateur a été supprimé");
 		alert.show();
+	}
+	
+	public void interfaceInfosContrat(ActionEvent e) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource(("GUI/InfosContrat.fxml")));
+		root.setOnMousePressed(Main.handlerPressed);
+		root.setOnMouseDragged(Main.handlerDragged);
+		Scene scene = new Scene(root);
+		Main.stage.setScene(scene);
+		Main.stage.centerOnScreen();
+	}
+	
+	public void interfaceContratDecroissance(ActionEvent e) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ContratDecroissance.fxml")));
+		root.setOnMousePressed(Main.handlerPressed);
+		root.setOnMouseDragged(Main.handlerDragged);
+		Scene scene = new Scene(root);
+		Main.stage.setScene(scene);
+		Main.stage.centerOnScreen();
+	}
+	public void actualiser(ActionEvent e) throws SQLException {
+		ObservableList<Contrat> data = FXCollections.observableArrayList();	
+		String sql = "SELECT * FROM contrat ORDER BY dateContrat ;";
+		Connection C = Login.connectDB();
+		PreparedStatement ps = (PreparedStatement)C.prepareStatement(sql);
+		ResultSet result = ps.executeQuery(sql);
+		while(result.next())
+			{
+			Contrat contrat = new Contrat();
+				contrat.setCodeContrat(result.getString(1));
+				Date sqlDateContrat=result.getDate(2);
+				contrat.setDateContrat(sqlDateContrat.toLocalDate());
+				Date sqlDateEcheance=result.getDate(3);
+				contrat.setDateEcheance(sqlDateEcheance.toLocalDate());
+				data.add(contrat);
+			}
+				code.setCellValueFactory(new PropertyValueFactory<Contrat,String>("codeContrat"));
+				dateC.setCellValueFactory(new PropertyValueFactory<>("dateContrat"));
+				dateE.setCellValueFactory(new PropertyValueFactory<>("dateEcheance"));
+				
+				tableview.setItems(data);
+		C.close();
 	}
 	public void retourGestion() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/GestionContrat.fxml")));
