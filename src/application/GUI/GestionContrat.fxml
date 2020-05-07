@@ -17,7 +17,7 @@
          <font>
             <Font name="System Bold" size="27.0" />
          </font></Label>
-      <Button layoutX="218.0" layoutY="124.0" mnemonicParsing="false" onAction="#interfaceAjouterContrat" prefHeight="42.0" prefWidth="252.0" styleClass="Button" text="Ajouter Un Contrat">
+      <Button layoutX="154.0" layoutY="124.0" mnemonicParsing="false" onAction="#interfaceAjouterContrat" prefHeight="42.0" prefWidth="378.0" styleClass="Button" text="Ajouter Un Contrat">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
@@ -25,7 +25,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="181.0" layoutY="208.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="325.0" styleClass="Button" text="Modifier/Supprimer Un Contrat">
+      <Button layoutX="157.0" layoutY="208.0" mnemonicParsing="false" onAction="#interfaceModifierUtilisateur" prefHeight="42.0" prefWidth="378.0" styleClass="Button" text="Modifier/Supprimer Un Contrat">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
