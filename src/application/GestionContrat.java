@@ -52,21 +52,7 @@ public class GestionContrat {
 	}
 	
 	
-	public void retour() throws IOException {
-		Parent root;
-		if(Main.ad) {
-			root = FXMLLoader.load(getClass().getResource(("GUI/AdminPanel.fxml")));
-		}
-		else {
-			root = FXMLLoader.load(getClass().getResource(("GUI/UserPanel.fxml")));
-		}
-		root.setOnMousePressed(Main.handlerPressed);
-		root.setOnMouseDragged(Main.handlerDragged);
-		Scene scene = new Scene(root);
-		Main.stage.setScene(scene);
-		Main.stage.centerOnScreen();
-
-	}
+	
 	
  
 	
@@ -266,4 +252,5 @@ public class GestionContrat {
 		Main.stage.centerOnScreen();
 
 	}
+
 }
