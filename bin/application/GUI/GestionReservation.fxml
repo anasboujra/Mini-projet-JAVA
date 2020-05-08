@@ -25,7 +25,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="171.0" layoutY="154.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="337.0" styleClass="Button" text="Modifier/Supprimer Une Réservation">
+      <Button layoutX="171.0" layoutY="154.0" mnemonicParsing="false" onAction="#interfaceModifierReservation" prefHeight="38.0" prefWidth="337.0" styleClass="Button" text="Modifier/Supprimer Une Réservation">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>

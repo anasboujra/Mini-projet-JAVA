@@ -130,7 +130,7 @@ public class GestionContrat {
 		else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Erreur");
-			alert.setHeaderText("Il n'y a aucun utilisateur avec ce CIN");
+			alert.setHeaderText("Il n'y a aucun utilisateur avec ce CODE");
 			alert.show();			
 		}
 		C.close();
