@@ -194,6 +194,15 @@ public class GestionReservation {
 		alert.show();
 	}
 	
+	public void interfaceInfosReservation(ActionEvent e) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource(("GUI/InfosReservation.fxml")));
+		root.setOnMousePressed(Main.handlerPressed);
+		root.setOnMouseDragged(Main.handlerDragged);
+		Scene scene = new Scene(root);
+		Main.stage.setScene(scene);
+		Main.stage.centerOnScreen();
+	}
+	
 	public void interfaceReservationDecroissance(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ReservationDecroissance.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);

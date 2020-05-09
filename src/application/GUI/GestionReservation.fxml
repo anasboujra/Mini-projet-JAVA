@@ -81,7 +81,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="367.0" layoutY="389.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="309.0" styleClass="Button" text="Rechercher une réservation par son code">
+      <Button layoutX="367.0" layoutY="389.0" mnemonicParsing="false" onAction="#interfaceInfosReservation" prefHeight="31.0" prefWidth="309.0" styleClass="Button" text="Rechercher une réservation par son code">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
