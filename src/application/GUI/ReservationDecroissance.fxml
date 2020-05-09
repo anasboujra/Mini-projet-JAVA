@@ -7,9 +7,9 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" styleClass="Window" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.GestionContrat">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" styleClass="Window" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.GestionReservation">
    <children>
-      <Label layoutX="231.0" layoutY="18.0" styleClass="Title" text="Informations du contrats">
+      <Label layoutX="231.0" layoutY="18.0" styleClass="Title" text="Informations du reservations">
          <font>
             <Font size="22.0" />
          </font>
@@ -24,12 +24,13 @@
       </Label>
       <TableView fx:id="tableview" layoutX="24.0" layoutY="78.0" prefHeight="386.0" prefWidth="655.0">
          <columns>
-            <TableColumn fx:id="code" prefWidth="173.0" text="Code Contrat" />
-            <TableColumn fx:id="dateC" prefWidth="232.0" text="Date Contrat" />
-            <TableColumn fx:id="dateE" prefWidth="243.0" text="Date Echeance" />
+            <TableColumn fx:id="code" prefWidth="122.0" text="Code Reservation" />
+            <TableColumn fx:id="dateRe" prefWidth="189.0" text="Date Reservation" />
+            <TableColumn fx:id="dateD" prefWidth="149.0" text="Date Depart" />
+            <TableColumn fx:id="dateRo" prefWidth="189.0" text="Date Retour" />
          </columns>
       </TableView>
-      <Label layoutX="485.0" layoutY="469.0" onMouseClicked="#retourGestion" styleClass="Title" text="Retour au gestion des contrats→">
+      <Label layoutX="443.0" layoutY="470.0" onMouseClicked="#retourGestion" styleClass="Title" text="Retour au gestion des reservations→">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

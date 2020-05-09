@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,8 +16,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class GestionReservation {
 	
@@ -33,6 +38,20 @@ public class GestionReservation {
 	
 	@FXML
 	private DatePicker dateRetour;
+	
+	// Table d'affichage
+			@FXML
+			private TableView<Reservation> tableview;
+			@FXML
+			private TableColumn<Reservation,String> code;
+			@FXML
+			private TableColumn<Reservation,?> dateRe;
+			@FXML
+			private TableColumn<Reservation,?> dateD;
+			@FXML
+			private TableColumn<Reservation,?> dateRo;
+			
+			
 
 	public void exitButton() {
 		Main.stage.close();
@@ -175,6 +194,41 @@ public class GestionReservation {
 		alert.show();
 	}
 	
+	public void interfaceReservationDecroissance(ActionEvent e) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ReservationDecroissance.fxml")));
+		root.setOnMousePressed(Main.handlerPressed);
+		root.setOnMouseDragged(Main.handlerDragged);
+		Scene scene = new Scene(root);
+		Main.stage.setScene(scene);
+		Main.stage.centerOnScreen();
+	}
+	
+	public void actualiser(ActionEvent e) throws SQLException {
+		ObservableList<Reservation> data = FXCollections.observableArrayList();	
+		String sql = "SELECT * FROM reservation ORDER BY dateReservation ;";
+		Connection C = Login.connectDB();
+		PreparedStatement ps = (PreparedStatement)C.prepareStatement(sql);
+		ResultSet result = ps.executeQuery(sql);
+		while(result.next())
+			{
+			Reservation reservation = new Reservation();
+				reservation.setCodeReservation(result.getString(1));
+				Date sqlDateReservation=result.getDate(2);
+				reservation.setDateReservation(sqlDateReservation.toLocalDate());
+				Date sqlDateDepart=result.getDate(3);
+				reservation.setDateDepart(sqlDateDepart.toLocalDate());
+				Date sqlDateRetour=result.getDate(4);
+				reservation.setDateRetour(sqlDateRetour.toLocalDate());
+				data.add(reservation);
+			}
+				code.setCellValueFactory(new PropertyValueFactory<Reservation,String>("codeReservation"));
+				dateRe.setCellValueFactory(new PropertyValueFactory<>("dateReservation"));
+				dateD.setCellValueFactory(new PropertyValueFactory<>("dateDepart"));
+				dateRo.setCellValueFactory(new PropertyValueFactory<>("dateRetour"));
+				
+				tableview.setItems(data);
+		C.close();
+	}
 	
 	
 	public void retourGestion() throws IOException {

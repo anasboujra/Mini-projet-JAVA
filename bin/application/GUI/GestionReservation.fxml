@@ -33,7 +33,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="51.0" layoutY="235.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="618.0" styleClass="Button" text="La liste des réservations par ordre décroissant de la date de réservation">
+      <Button layoutX="51.0" layoutY="235.0" mnemonicParsing="false" onAction="#interfaceReservationDecroissance" prefHeight="31.0" prefWidth="618.0" styleClass="Button" text="La liste des réservations par ordre décroissant de la date de réservation">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
