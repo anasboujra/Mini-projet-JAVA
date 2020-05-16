@@ -53,7 +53,7 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <Button fx:id="selectionner" layoutX="178.0" layoutY="395.0" mnemonicParsing="false" onAction="#browse" prefHeight="17.0" prefWidth="265.0" style="-fx-background-color: transparent; -fx-border-color: #ff00ff; -fx-border-radius: 15px;" text="Selectionner votre image" textFill="WHITE">
+      <Button fx:id="selectionner" layoutX="178.0" layoutY="395.0" mnemonicParsing="false" onAction="#browse" prefHeight="17.0" prefWidth="265.0" style="-fx-background-color: transparent; -fx-border-color: #75B4EB; -fx-border-radius: 15px;" text="Selectionner votre image" textFill="WHITE">
          <font>
             <Font name="Corbel Bold" size="18.0" />
          </font>

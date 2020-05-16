@@ -24,6 +24,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class GestionReservation {
 	
+	String rCode;
+	
 	@FXML
 	private TextField codeReservation;
 	
@@ -68,7 +70,8 @@ public class GestionReservation {
 	}
 	
 	public void ajouterReservation(ActionEvent e) throws IOException, SQLException {
-		if( !codeReservation.getText().equals("") &&  !dateReservation.equals(null) && !dateDepart.equals(null) && !dateRetour.equals(null) ) 
+		if( !codeReservation.getText().equals("") &&  dateReservation.getValue()!=null && dateDepart.getValue()!=null 
+				&& dateRetour.getValue()!=null ) 
 		{
 			String cSql = "SELECT * FROM `reservation` WHERE codeReservation='"+codeReservation.getText()+"';";
 			Connection cC = Login.connectDB();
@@ -77,7 +80,7 @@ public class GestionReservation {
 			if(reservationResult.next()) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Erreur");
-				alert.setHeaderText("Il y'a déjà un utilisateur avec le même CIN");
+				alert.setHeaderText("Il y'a déjà une reservation avec le même code");
 				alert.show();
 			} 
 			else {
@@ -118,8 +121,8 @@ public class GestionReservation {
 	}
 	
 	public void rechercherReservation(ActionEvent e) throws SQLException {
-		String RESERVATION = rechercher.getText();
-		String sql = "SELECT * FROM `reservation` WHERE codeReservation='"+ RESERVATION +"';";
+		rCode = rechercher.getText();
+		String sql = "SELECT * FROM `reservation` WHERE codeReservation='"+ rCode +"';";
 		Connection C = Login.connectDB();
 		PreparedStatement ps = C.prepareStatement(sql);
 		ResultSet result = ps.executeQuery();
@@ -135,24 +138,25 @@ public class GestionReservation {
 		else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Erreur");
-			alert.setHeaderText("Il n'y a aucun utilisateur avec ce CODE");
+			alert.setHeaderText("Il n'y a aucune reservation avec ce CODE");
 			alert.show();			
 		}
 		C.close();
 	}
 	
 	public void modifierReservation(ActionEvent e) throws IOException, SQLException {
-		if(!codeReservation.getText().equals("") && !dateReservation.equals(null) && !dateDepart.equals(null) && !dateRetour.equals(null)) {
+		if( !codeReservation.getText().equals("") &&  dateReservation.getValue()!=null && dateDepart.getValue()!=null 
+				&& dateRetour.getValue()!=null ) {
 			
 			Reservation reservation = new Reservation(codeReservation.getText(),dateReservation.getValue(),dateDepart.getValue(),dateRetour.getValue());
 			String sql = "SELECT `codeReservation` FROM `reservation` WHERE codeReservation='"+reservation.getCodeReservation()+"';";
 			Connection C = Login.connectDB();
 			PreparedStatement ps = C.prepareStatement(sql);
 			ResultSet result = ps.executeQuery();
-			if(result.next() && !reservation.getCodeReservation().equalsIgnoreCase(rechercher.getText())) {	
+			if(result.next() && !reservation.getCodeReservation().equalsIgnoreCase(rCode)) {	
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Erreur");
-				alert.setHeaderText("Il y'a déjà un utilisateur avec le même CODE");
+				alert.setHeaderText("Il y'a déjà une reservation avec le même CODE");
 				alert.show();
 			}
 			else {
@@ -163,7 +167,7 @@ public class GestionReservation {
 				ps2.setObject(2, reservation.getDateReservation());
 				ps2.setObject(3, reservation.getDateDepart());
 				ps2.setObject(4, reservation.getDateRetour());
-				ps2.setString(4, rechercher.getText());
+				ps2.setString(5, rechercher.getText());
 				ps2.executeUpdate();
 				retourGestion();
 				Alert alert = new Alert(AlertType.INFORMATION);
@@ -190,7 +194,7 @@ public class GestionReservation {
 		retourGestion();
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Succès");
-		alert.setHeaderText("L'utilisateur a été supprimé");
+		alert.setHeaderText("La réservation a été supprimée");
 		alert.show();
 	}
 	
@@ -234,7 +238,6 @@ public class GestionReservation {
 				dateRe.setCellValueFactory(new PropertyValueFactory<>("dateReservation"));
 				dateD.setCellValueFactory(new PropertyValueFactory<>("dateDepart"));
 				dateRo.setCellValueFactory(new PropertyValueFactory<>("dateRetour"));
-				
 				tableview.setItems(data);
 		C.close();
 	}

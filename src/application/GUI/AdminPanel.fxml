@@ -12,7 +12,7 @@
          <font>
             <Font size="28.0" />
          </font></Label>
-      <Button layoutX="55.0" layoutY="116.0" mnemonicParsing="false" onAction="#interfaceUtilisateur" prefHeight="32.0" prefWidth="238.0" styleClass="Button" text="(1) Gestion des utilisateurs">
+      <Button layoutX="55.0" layoutY="116.0" mnemonicParsing="false" onAction="#interfaceUtilisateurs" prefHeight="32.0" prefWidth="238.0" styleClass="Button" text="(1) Gestion des utilisateurs">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>

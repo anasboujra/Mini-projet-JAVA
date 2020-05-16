@@ -87,14 +87,14 @@ public class GestionClient {
 			if(clientResult.next()) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Erreur");
-				alert.setHeaderText("Il y'a déjà un utilisateur avec le même CIN");
+				alert.setHeaderText("Il y'a déjà un client avec le même CIN");
 				alert.show();
 			} 
 			else {
 				String GSM = nGSM.getText();
 				int nGSM = Integer.parseInt(GSM);
 				Client client = new Client(codeClient.getText(), nomComplet.getText(), adresse.getText(), nGSM, is);
-				String sql = "INSERT INTO client(`codeClient`, `nomComplet`, `adresse`, `nGSM`, `permisConduire` ) VALUES (?,?,?,?,?)";
+				String sql = "INSERT INTO client(`codeClient`, `nomComplet`, `adresse`, `GSM`, `permisConduire` ) VALUES (?,?,?,?,?)";
 				Connection C = Login.connectDB();
 				PreparedStatement ps = C.prepareStatement(sql);
 				ps.setString(1, client.getCodeClient());
@@ -165,11 +165,10 @@ public class GestionClient {
 			Connection C = Login.connectDB();
 			PreparedStatement ps = C.prepareStatement(sql);
 			ResultSet result = ps.executeQuery();
-			boolean bool = result.next();
-			if(bool && !client.getCodeClient().equalsIgnoreCase(rCodeClient)) {
+			if(result.next() && !client.getCodeClient().equalsIgnoreCase(rCodeClient)) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Erreur");
-				alert.setHeaderText("Il y'a déjà un utilisateur avec le même Code Client");
+				alert.setHeaderText("Il y'a déjà un client avec le même Code Client");
 				alert.show();
 			}
 			else {
@@ -177,16 +176,15 @@ public class GestionClient {
 				Connection C3 = Login.connectDB();
 				PreparedStatement ps3 = C3.prepareStatement(sql3);
 				ResultSet result3 = ps3.executeQuery();
-				boolean bool3 = result3.next();
-				if(bool3 && !client.getNomComplet().equalsIgnoreCase(rNomComplet)) {
+				if(result3.next() && !client.getNomComplet().equalsIgnoreCase(rNomComplet)) {
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setTitle("Erreur");
-					alert.setHeaderText("Il y'a déjà un utilisateur avec le même Nom Complet");
+					alert.setHeaderText("Il y'a déjà un client avec le même Nom Complet");
 					alert.show();
 				}
 				else {
 					if(is != null) {
-						String sql2 = "UPDATE `client` SET `codeClient`=?,`nomComplet`=?,`adresse`=?,`nGSM`=?,`permisConduire`=?  WHERE nomComplet=?;";
+						String sql2 = "UPDATE `client` SET `codeClient`=?,`nomComplet`=?,`adresse`=?,`GSM`=?,`permisConduire`=?  WHERE nomComplet=?;";
 						Connection C2 = Login.connectDB();
 						PreparedStatement ps2 = C2.prepareStatement(sql2);
 						ps2.setString(1, client.getCodeClient());
@@ -198,7 +196,7 @@ public class GestionClient {
 						ps2.executeUpdate();
 					}
 					else{
-						String sql2 = "UPDATE `client` SET `codeClient`=?,`nomComplet`=?,`adresse`=?,`nGSM`=?  WHERE nomComplet=?;";
+						String sql2 = "UPDATE `client` SET `codeClient`=?,`nomComplet`=?,`adresse`=?,`GSM`=?  WHERE nomComplet=?;";
 						Connection C2 = Login.connectDB();
 						PreparedStatement ps2 = C2.prepareStatement(sql2);
 						ps2.setString(1, client.getCodeClient());
@@ -259,7 +257,7 @@ public class GestionClient {
 	
 	public void actualiser(ActionEvent e) throws SQLException {
 		ObservableList<Client> data = FXCollections.observableArrayList();	
-		String sql = "SELECT * FROM client ;";
+		String sql = "SELECT * FROM client ORDER BY codeClient;";
 		Connection C = Login.connectDB();
 		PreparedStatement ps = (PreparedStatement)C.prepareStatement(sql);
 		ResultSet result = ps.executeQuery(sql);

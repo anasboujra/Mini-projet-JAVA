@@ -13,7 +13,7 @@ public class Panel {
 		Main.stage.close();
 	}
 
-	public void interfaceUtilisateur(ActionEvent e) throws IOException {
+	public void interfaceUtilisateurs(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/GestionUtilisateur.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
 		root.setOnMouseDragged(Main.handlerDragged);

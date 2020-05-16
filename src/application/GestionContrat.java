@@ -23,6 +23,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 public class GestionContrat {
+	
+	String rCode;
 
 	@FXML
 	private TextField codeContrat;
@@ -66,7 +68,7 @@ public class GestionContrat {
 	}
 	
 	public void ajouterContrat(ActionEvent e) throws IOException, SQLException {
-		if( !codeContrat.getText().equals("") &&  !dateContrat.equals(null) && !dateEcheance.equals(null)  ) 
+		if( !codeContrat.getText().equals("") &&  dateContrat.getValue()!=null && dateEcheance.getValue()!=null ) 
 		{
 			String cSql = "SELECT * FROM `contrat` WHERE codeContrat='"+codeContrat.getText()+"';";
 			Connection cC = Login.connectDB();
@@ -75,7 +77,7 @@ public class GestionContrat {
 			if(contratResult.next()) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Erreur");
-				alert.setHeaderText("Il y'a déjà un utilisateur avec le même CIN");
+				alert.setHeaderText("Il y'a déjà un contat avec le même Code");
 				alert.show();
 			} 
 			else {
@@ -115,8 +117,8 @@ public class GestionContrat {
 	}
 	
 	public void rechercherContrat(ActionEvent e) throws SQLException {
-		String rCONTRAT = rechercher.getText();
-		String sql = "SELECT * FROM `contrat` WHERE codeContrat='"+rCONTRAT+"';";
+		rCode = rechercher.getText();
+		String sql = "SELECT * FROM `contrat` WHERE codeContrat='"+rCode+"';";
 		Connection C = Login.connectDB();
 		PreparedStatement ps = C.prepareStatement(sql);
 		ResultSet result = ps.executeQuery();
@@ -130,21 +132,21 @@ public class GestionContrat {
 		else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Erreur");
-			alert.setHeaderText("Il n'y a aucun utilisateur avec ce CODE");
+			alert.setHeaderText("Il n'y a aucun contrat avec ce CODE");
 			alert.show();			
 		}
 		C.close();
 	}
 	
 	public void modifierContrat(ActionEvent e) throws IOException, SQLException {
-		if(!codeContrat.getText().equals("") && !dateContrat.equals(null) && !dateEcheance.equals(null)) {
+		if(!codeContrat.getText().equals("") &&  dateContrat.getValue()!=null && dateEcheance.getValue()!=null) {
 			
 			Contrat contrat = new Contrat(codeContrat.getText(),dateContrat.getValue(),dateEcheance.getValue());
 			String sql = "SELECT `codeContrat` FROM `contrat` WHERE codeContrat='"+contrat.getCodeContrat()+"';";
 			Connection C = Login.connectDB();
 			PreparedStatement ps = C.prepareStatement(sql);
 			ResultSet result = ps.executeQuery();
-			if(result.next() && !contrat.getCodeContrat().equalsIgnoreCase(rechercher.getText())) {	
+			if(result.next() && !contrat.getCodeContrat().equalsIgnoreCase(rCode)) {	
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Erreur");
 				alert.setHeaderText("Il y'a déjà un utilisateur avec le même CIN");
@@ -184,7 +186,7 @@ public class GestionContrat {
 		retourGestion();
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Succès");
-		alert.setHeaderText("L'utilisateur a été supprimé");
+		alert.setHeaderText("Le contrat a été supprimé");
 		alert.show();
 	}
 	
