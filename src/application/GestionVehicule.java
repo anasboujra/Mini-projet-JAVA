@@ -87,10 +87,8 @@ public class GestionVehicule {
 				alert.show();
 			} 
 			else {
-				String numIm = numImmatriculation.getText();
-				String comKM = compteurKM.getText();
-				int intNumIm = Integer.parseInt(numIm);
-				int intComKM = Integer.parseInt(comKM);
+				int intNumIm = Integer.parseInt(numImmatriculation.getText());
+				int intComKM = Integer.parseInt(compteurKM.getText());
 				
 				Vehicule vehicule = new Vehicule(intNumIm, marque.getText(), type.getText(), carburant.getText(), intComKM, dateMiseCirculation.getValue());
 				String sql = "INSERT INTO vehicule(`numImmatriculation`, `marque`, `type`, `carburant`, `compteurKM`, `dateMiseCirculation` ) VALUES (?,?,?,?,?,?)";
