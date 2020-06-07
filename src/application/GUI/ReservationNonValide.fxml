@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" styleClass="Window" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.GestionReservation">
    <children>
-      <Label layoutX="231.0" layoutY="18.0" styleClass="Title" text="Informations du reservations">
+      <Label layoutX="195.0" layoutY="18.0" styleClass="Title" text="Informations du reservations non validees">
          <font>
             <Font size="22.0" />
          </font>
@@ -26,9 +26,8 @@
          <columns>
             <TableColumn fx:id="code" prefWidth="122.0" text="Code Reservation" />
             <TableColumn fx:id="dateRe" prefWidth="164.0" text="Date Reservation" />
-            <TableColumn fx:id="dateD" prefWidth="146.0" text="Date Depart" />
-            <TableColumn fx:id="dateRo" prefWidth="133.0" text="Date Retour" />
-            <TableColumn fx:id="statusRe" prefWidth="89.0" text="Status" />
+            <TableColumn fx:id="dateD" prefWidth="198.0" text="Date Depart" />
+            <TableColumn fx:id="dateRo" prefWidth="170.0" text="Date Retour" />
          </columns>
       </TableView>
       <Label layoutX="443.0" layoutY="470.0" onMouseClicked="#retourGestion" styleClass="Title" text="Retour au gestion des reservations→">
@@ -39,6 +38,6 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Button layoutX="609.0" layoutY="50.0" mnemonicParsing="false" onAction="#actualiser" text="Actualiser" />
+      <Button layoutX="609.0" layoutY="50.0" mnemonicParsing="false" onAction="#actualiserReservationNonValide" text="Actualiser" />
    </children>
 </AnchorPane>

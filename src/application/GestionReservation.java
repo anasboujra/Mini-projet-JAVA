@@ -6,7 +6,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,6 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class GestionReservation {
@@ -41,6 +41,9 @@ public class GestionReservation {
 	@FXML
 	private DatePicker dateRetour;
 	
+	@FXML
+	private ComboBox <String> comboBox;
+	
 	// Table d'affichage
 			@FXML
 			private TableView<Reservation> tableview;
@@ -52,6 +55,23 @@ public class GestionReservation {
 			private TableColumn<Reservation,?> dateD;
 			@FXML
 			private TableColumn<Reservation,?> dateRo;
+			@FXML
+			private TableColumn<Reservation,String> statusRe;
+			
+			 
+			public void  statusAjouter( ) {
+			    comboBox.getItems().removeAll(comboBox.getItems());
+			    comboBox.getItems().addAll("Valide", "Non Valide");
+			    comboBox.getSelectionModel().select("Valide");
+			}
+			
+			public void  statusModifier( ) {
+			    comboBox.getItems().removeAll(comboBox.getItems());
+			    comboBox.getItems().addAll("Valide", "Non Valide","Annule");
+			    comboBox.getSelectionModel().select("Valide");
+			}
+
+
 			
 			
 
@@ -71,7 +91,7 @@ public class GestionReservation {
 	
 	public void ajouterReservation(ActionEvent e) throws IOException, SQLException {
 		if( !codeReservation.getText().equals("") &&  dateReservation.getValue()!=null && dateDepart.getValue()!=null 
-				&& dateRetour.getValue()!=null ) 
+				&& dateRetour.getValue()!=null && comboBox.getValue()!=null ) 
 		{
 			String cSql = "SELECT * FROM `reservation` WHERE codeReservation='"+codeReservation.getText()+"';";
 			Connection cC = Login.connectDB();
@@ -85,14 +105,15 @@ public class GestionReservation {
 			} 
 			else {
 				 
-				Reservation reservation = new Reservation(codeReservation.getText(), dateReservation.getValue(), dateDepart.getValue(),dateRetour.getValue());
-				String sql = "INSERT INTO `reservation`(`codeReservation`, `dateReservation`, `dateDepart`, `dateRetour`) VALUES (?,?,?,?)";
+				Reservation reservation = new Reservation(codeReservation.getText(), dateReservation.getValue(), dateDepart.getValue(),dateRetour.getValue(),comboBox.getValue());
+				String sql = "INSERT INTO `reservation`(`codeReservation`, `dateReservation`, `dateDepart`, `dateRetour`, `status`) VALUES (?,?,?,?,?)";
 				Connection C = Login.connectDB();
 				PreparedStatement ps = C.prepareStatement(sql);
 				ps.setString(1, reservation.getCodeReservation());
 				ps.setObject(2, reservation.getDateReservation());
 				ps.setObject(3, reservation.getDateDepart());
 				ps.setObject(4, reservation.getDateRetour());
+				ps.setString(5, reservation.getStatus());
 				ps.executeUpdate();
 				C.close();
 				retourGestion();
@@ -134,6 +155,7 @@ public class GestionReservation {
 			dateDepart.setValue(sqlDateDepart.toLocalDate());
 			Date sqlDateRetour = result.getDate(4);
 			dateRetour.setValue(sqlDateRetour.toLocalDate());
+			comboBox.setValue(result.getString(5));
 		}
 		else {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -146,9 +168,9 @@ public class GestionReservation {
 	
 	public void modifierReservation(ActionEvent e) throws IOException, SQLException {
 		if( !codeReservation.getText().equals("") &&  dateReservation.getValue()!=null && dateDepart.getValue()!=null 
-				&& dateRetour.getValue()!=null ) {
+				&& dateRetour.getValue()!=null && comboBox.getValue()!=null ) {
 			
-			Reservation reservation = new Reservation(codeReservation.getText(),dateReservation.getValue(),dateDepart.getValue(),dateRetour.getValue());
+			Reservation reservation = new Reservation(codeReservation.getText(),dateReservation.getValue(),dateDepart.getValue(),dateRetour.getValue(),comboBox.getValue());
 			String sql = "SELECT `codeReservation` FROM `reservation` WHERE codeReservation='"+reservation.getCodeReservation()+"';";
 			Connection C = Login.connectDB();
 			PreparedStatement ps = C.prepareStatement(sql);
@@ -160,14 +182,15 @@ public class GestionReservation {
 				alert.show();
 			}
 			else {
-				String sql2 = "UPDATE `reservation` SET `codeReservation`=? ,`dateReservation`=? ,`dateDepart`=? ,`dateRetour`=?  WHERE codeReservation=?;";
+				String sql2 = "UPDATE `reservation` SET `codeReservation`=? ,`dateReservation`=? ,`dateDepart`=? ,`dateRetour`=?,`status`=?  WHERE codeReservation=?;";
 				Connection C2 = Login.connectDB();
 				PreparedStatement ps2 = C2.prepareStatement(sql2);
 				ps2.setString(1, reservation.getCodeReservation());
 				ps2.setObject(2, reservation.getDateReservation());
 				ps2.setObject(3, reservation.getDateDepart());
 				ps2.setObject(4, reservation.getDateRetour());
-				ps2.setString(5, rechercher.getText());
+				ps2.setString(5, reservation.getStatus());
+				ps2.setString(6, rechercher.getText());
 				ps2.executeUpdate();
 				retourGestion();
 				Alert alert = new Alert(AlertType.INFORMATION);
@@ -232,16 +255,129 @@ public class GestionReservation {
 				reservation.setDateDepart(sqlDateDepart.toLocalDate());
 				Date sqlDateRetour=result.getDate(4);
 				reservation.setDateRetour(sqlDateRetour.toLocalDate());
+				reservation.setStatus(result.getString(5));
 				data.add(reservation);
 			}
 				code.setCellValueFactory(new PropertyValueFactory<Reservation,String>("codeReservation"));
 				dateRe.setCellValueFactory(new PropertyValueFactory<>("dateReservation"));
 				dateD.setCellValueFactory(new PropertyValueFactory<>("dateDepart"));
 				dateRo.setCellValueFactory(new PropertyValueFactory<>("dateRetour"));
+				statusRe.setCellValueFactory(new PropertyValueFactory<Reservation,String>("status"));
 				tableview.setItems(data);
 		C.close();
 	}
 	
+	public void interfaceReservationValider(ActionEvent e) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ReservationValider.fxml")));
+		root.setOnMousePressed(Main.handlerPressed);
+		root.setOnMouseDragged(Main.handlerDragged);
+		Scene scene = new Scene(root);
+		Main.stage.setScene(scene);
+		Main.stage.centerOnScreen();
+	}
+	public void actualiserReservationValide(ActionEvent e) throws SQLException {
+		ObservableList<Reservation> data = FXCollections.observableArrayList();	
+		String sql = "SELECT * FROM `reservation` WHERE `status` = 'Valide';";
+		Connection C = Login.connectDB();
+		PreparedStatement ps = (PreparedStatement)C.prepareStatement(sql);
+		ResultSet result = ps.executeQuery(sql);
+		while(result.next())
+			{
+			Reservation reservation = new Reservation();
+				reservation.setCodeReservation(result.getString(1));
+				Date sqlDateReservation=result.getDate(2);
+				reservation.setDateReservation(sqlDateReservation.toLocalDate());
+				Date sqlDateDepart=result.getDate(3);
+				reservation.setDateDepart(sqlDateDepart.toLocalDate());
+				Date sqlDateRetour=result.getDate(4);
+				reservation.setDateRetour(sqlDateRetour.toLocalDate());
+				//reservation.setStatus(result.getString(5));
+				data.add(reservation);
+			}
+				code.setCellValueFactory(new PropertyValueFactory<Reservation,String>("codeReservation"));
+				dateRe.setCellValueFactory(new PropertyValueFactory<>("dateReservation"));
+				dateD.setCellValueFactory(new PropertyValueFactory<>("dateDepart"));
+				dateRo.setCellValueFactory(new PropertyValueFactory<>("dateRetour"));
+				//statusRe.setCellValueFactory(new PropertyValueFactory<Reservation,String>("status"));
+				tableview.setItems(data);
+		C.close();
+	}
+	
+	public void interfaceReservationNonValide(ActionEvent e) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ReservationNonValide.fxml")));
+		root.setOnMousePressed(Main.handlerPressed);
+		root.setOnMouseDragged(Main.handlerDragged);
+		Scene scene = new Scene(root);
+		Main.stage.setScene(scene);
+		Main.stage.centerOnScreen();
+	}
+	public void actualiserReservationNonValide(ActionEvent e) throws SQLException {
+		ObservableList<Reservation> data = FXCollections.observableArrayList();	
+		String sql = "SELECT * FROM `reservation` WHERE `status` = 'Non Valide';";
+		Connection C = Login.connectDB();
+		PreparedStatement ps = (PreparedStatement)C.prepareStatement(sql);
+		ResultSet result = ps.executeQuery(sql);
+		while(result.next())
+			{
+			Reservation reservation = new Reservation();
+				reservation.setCodeReservation(result.getString(1));
+				Date sqlDateReservation=result.getDate(2);
+				reservation.setDateReservation(sqlDateReservation.toLocalDate());
+				Date sqlDateDepart=result.getDate(3);
+				reservation.setDateDepart(sqlDateDepart.toLocalDate());
+				Date sqlDateRetour=result.getDate(4);
+				reservation.setDateRetour(sqlDateRetour.toLocalDate());
+				//reservation.setStatus(result.getString(5));
+				data.add(reservation);
+			}
+				code.setCellValueFactory(new PropertyValueFactory<Reservation,String>("codeReservation"));
+				dateRe.setCellValueFactory(new PropertyValueFactory<>("dateReservation"));
+				dateD.setCellValueFactory(new PropertyValueFactory<>("dateDepart"));
+				dateRo.setCellValueFactory(new PropertyValueFactory<>("dateRetour"));
+				//statusRe.setCellValueFactory(new PropertyValueFactory<Reservation,String>("status"));
+				tableview.setItems(data);
+		C.close();
+	}
+	
+	public void interfaceReservationAnnule(ActionEvent e) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ReservationAnnule.fxml")));
+		root.setOnMousePressed(Main.handlerPressed);
+		root.setOnMouseDragged(Main.handlerDragged);
+		Scene scene = new Scene(root);
+		Main.stage.setScene(scene);
+		Main.stage.centerOnScreen();
+	}
+	
+	public void actualiserReservationAnnule(ActionEvent e) throws SQLException {
+		ObservableList<Reservation> data = FXCollections.observableArrayList();	
+		String sql = "SELECT * FROM `reservation` WHERE `status` = 'Annule';";
+		Connection C = Login.connectDB();
+		PreparedStatement ps = (PreparedStatement)C.prepareStatement(sql);
+		ResultSet result = ps.executeQuery(sql);
+		while(result.next())
+			{
+			Reservation reservation = new Reservation();
+				reservation.setCodeReservation(result.getString(1));
+				Date sqlDateReservation=result.getDate(2);
+				reservation.setDateReservation(sqlDateReservation.toLocalDate());
+				Date sqlDateDepart=result.getDate(3);
+				reservation.setDateDepart(sqlDateDepart.toLocalDate());
+				Date sqlDateRetour=result.getDate(4);
+				reservation.setDateRetour(sqlDateRetour.toLocalDate());
+				//reservation.setStatus(result.getString(5));
+				data.add(reservation);
+			}
+				code.setCellValueFactory(new PropertyValueFactory<Reservation,String>("codeReservation"));
+				dateRe.setCellValueFactory(new PropertyValueFactory<>("dateReservation"));
+				dateD.setCellValueFactory(new PropertyValueFactory<>("dateDepart"));
+				dateRo.setCellValueFactory(new PropertyValueFactory<>("dateRetour"));
+				//statusRe.setCellValueFactory(new PropertyValueFactory<Reservation,String>("status"));
+				tableview.setItems(data);
+		C.close();
+	}
+	
+
+ 
 	
 	public void retourGestion() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/GestionReservation.fxml")));
@@ -251,6 +387,8 @@ public class GestionReservation {
 		Main.stage.setScene(scene);
 		Main.stage.centerOnScreen();
 	}
+	
+	
 	public void retour() throws IOException {
 		Parent root;
 		if(Main.ad) {

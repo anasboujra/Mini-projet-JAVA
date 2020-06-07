@@ -8,16 +8,29 @@ public class Reservation {
 	private LocalDate dateReservation;
 	private LocalDate dateDepart;
 	private LocalDate dateRetour;
+	private String status;
 	public Reservation() {
 		super();
 	}
-	public Reservation(String codeReservation, LocalDate dateReservation, LocalDate dateDepart, LocalDate dateRetour) {
+	 
+	public Reservation(String codeReservation, LocalDate dateReservation, LocalDate dateDepart, LocalDate dateRetour,
+			String status) {
 		super();
 		this.codeReservation = codeReservation;
 		this.dateReservation = dateReservation;
 		this.dateDepart = dateDepart;
 		this.dateRetour = dateRetour;
+		this.status = status;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public String getCodeReservation() {
 		return codeReservation;
 	}

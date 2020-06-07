@@ -94,5 +94,11 @@
             <Font size="17.0" />
          </font>
       </Label>
+      <ComboBox fx:id="comboBox" editable="true" layoutX="187.0" layoutY="475.0" onShown="#statusModifier" prefHeight="25.0" prefWidth="251.0" visibleRowCount="3" />
+      <Label layoutX="37.0" layoutY="474.0" styleClass="Label" text="Statut">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
