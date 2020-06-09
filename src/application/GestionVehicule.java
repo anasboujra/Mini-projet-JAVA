@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -29,17 +30,20 @@ public class GestionVehicule {
 	@FXML
 	private TextField numImmatriculation;
 	@FXML
-	private TextField marque;
+	private ComboBox <String> comboMarque;
 	@FXML
 	private TextField type;
 	@FXML
-	private TextField carburant;
+	private ComboBox <String> comboCarburant;
 	@FXML
 	private TextField compteurKM;
 	@FXML
 	private DatePicker dateMiseCirculation;
 	@FXML
 	private TextField rechercher;
+	
+	@FXML
+	private ComboBox <String> comboParking;
 	
 	// Table d'affichage
 	@FXML
@@ -56,12 +60,38 @@ public class GestionVehicule {
 	private TableColumn<Vehicule,Integer> tableCompteurKM;
 	@FXML
 	private TableColumn<Vehicule,LocalDate> tableDateMiseCirculation;
-
+	
+ 
+	
 	
 	public void exitButton() {
 		Main.stage.close();
 	}
+	public void  ajouterMarque() {
+		comboMarque.getItems().removeAll(comboMarque.getItems());
+		comboMarque.getItems().addAll("Peugeot", "Renault","Opel","Citroën","Volkswagen","BMW","Mercedes","Nissan","Audi","Ford","Hyundai");
+	    
+	}
 	
+	public void ajouterCarburant()
+	{
+		comboCarburant.getItems().removeAll(comboMarque.getItems());
+		comboCarburant.getItems().addAll("Essence","Mazot");
+	    
+		
+	}
+	
+	public void ajouterParking() throws SQLException
+	{
+		String Parking = "SELECT nom FROM `parking`;";
+		Connection vC = Login.connectDB();
+		PreparedStatement vPS = vC.prepareStatement(Parking);
+		ResultSet resultSet = vPS.executeQuery();
+        while (resultSet.next())
+        {  
+            comboParking.getItems().addAll(resultSet.getString(1)); 
+        	}
+	}
 	public void interfaceAjouterVehicule(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/AjouterVehicule.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -72,8 +102,8 @@ public class GestionVehicule {
 	}
 	
 	public void ajouterVehicule(ActionEvent e) throws IOException, SQLException {
-		if(!numImmatriculation.getText().equals("") && !marque.getText().equals("") && !type.getText().equals("") 
-				&& !carburant.getText().equals("")  && !compteurKM.getText().equals("")  
+		if(!numImmatriculation.getText().equals("") && comboMarque.getValue()!=null && !type.getText().equals("") 
+				&& comboCarburant.getValue()!=null  && !compteurKM.getText().equals("")  
 				&& dateMiseCirculation.getValue()!=null ) 
 		{
 			String vSql = "SELECT * FROM `vehicule` WHERE numImmatriculation='"+numImmatriculation.getText()+"';";
@@ -90,8 +120,8 @@ public class GestionVehicule {
 				int intNumIm = Integer.parseInt(numImmatriculation.getText());
 				int intComKM = Integer.parseInt(compteurKM.getText());
 				
-				Vehicule vehicule = new Vehicule(intNumIm, marque.getText(), type.getText(), carburant.getText(), intComKM, dateMiseCirculation.getValue());
-				String sql = "INSERT INTO vehicule(`numImmatriculation`, `marque`, `type`, `carburant`, `compteurKM`, `dateMiseCirculation` ) VALUES (?,?,?,?,?,?)";
+				Vehicule vehicule = new Vehicule(intNumIm, comboMarque.getValue(), type.getText(), comboCarburant.getValue(), intComKM, dateMiseCirculation.getValue(),comboParking.getValue());
+				String sql = "INSERT INTO `vehicule`(`numImmatriculation`, `marque`, `type`, `carburant`, `compteurKM`, `dateMiseCirculation`, `parking`) VALUES (?,?,?,?,?,?,?)";
 				Connection C = Login.connectDB();
 				PreparedStatement ps = C.prepareStatement(sql);
 				ps.setInt(1, vehicule.getNumImmatriculation());
@@ -100,6 +130,7 @@ public class GestionVehicule {
 				ps.setString(4, vehicule.getCarburant());
 				ps.setInt(5, vehicule.getCompteurKM());				
 				ps.setObject(6, vehicule.getDateMiseCirculation());
+				ps.setString(7, vehicule.getParking());
 				ps.executeUpdate();
 				C.close();
 				retourGestion();
@@ -135,11 +166,12 @@ public class GestionVehicule {
 		ResultSet result = ps.executeQuery();
 		if(result.next()) {
 			numImmatriculation.setText(result.getString(1));
-			marque.setText(result.getString(2));
+			comboMarque.setValue(result.getString(2));
 			type.setText(result.getString(3));
-			carburant.setText(result.getString(4));
+			comboCarburant.setValue(result.getString(4));
 			compteurKM.setText(result.getString(5));
 			dateMiseCirculation.setValue(result.getDate(6).toLocalDate());
+			comboParking.setValue(result.getString(7));
 		}
 		else {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -151,8 +183,8 @@ public class GestionVehicule {
 	}
 	
 	public void modifierVehicule(ActionEvent e) throws IOException, SQLException {
-		if(!numImmatriculation.getText().equals("") && !marque.getText().equals("") && !type.getText().equals("") 
-				&& !carburant.getText().equals("")  && !compteurKM.getText().equals("")  
+		if(!numImmatriculation.getText().equals("") && comboMarque.getValue()!=null && !type.getText().equals("") 
+				&& comboCarburant.getValue()!=null  && !compteurKM.getText().equals("")  
 				&& dateMiseCirculation.getValue()!=null )
 		{
 			String numIm = numImmatriculation.getText();
@@ -160,7 +192,7 @@ public class GestionVehicule {
 			int intNumIm = Integer.parseInt(numIm);
 			int intComKM = Integer.parseInt(comKM);
 			
-			Vehicule vehicule = new Vehicule(intNumIm, marque.getText(), type.getText(), carburant.getText(), intComKM, dateMiseCirculation.getValue());
+			Vehicule vehicule = new Vehicule(intNumIm, comboMarque.getValue(), type.getText(), comboCarburant.getValue(), intComKM, dateMiseCirculation.getValue(),comboParking.getValue());
 			String sql = "SELECT `numImmatriculation` FROM `vehicule` WHERE numImmatriculation='"+intNumIm+"';";
 			Connection C = Login.connectDB();
 			PreparedStatement ps = C.prepareStatement(sql);
@@ -172,7 +204,7 @@ public class GestionVehicule {
 				alert.show();
 			}
 			else {
-				String sql2 = "UPDATE `vehicule` SET `numImmatriculation`=?,`marque`=?,`type`=?,`carburant`=?,`compteurKM`=?,`dateMiseCirculation`=?  WHERE numImmatriculation=?;";
+				String sql2 = "UPDATE `vehicule` SET `numImmatriculation`=?,`marque`=?,`type`=?,`carburant`=?,`compteurKM`=?,`dateMiseCirculation`=?, 'parking'=?  WHERE numImmatriculation=?;";
 				Connection C2 = Login.connectDB();
 				PreparedStatement ps2 = C2.prepareStatement(sql2);
 				ps2.setInt(1, vehicule.getNumImmatriculation());
@@ -181,7 +213,8 @@ public class GestionVehicule {
 				ps2.setString(4, vehicule.getCarburant());
 				ps2.setInt(5, vehicule.getCompteurKM());
 				ps2.setObject(6, vehicule.getDateMiseCirculation());
-				ps2.setInt(7, rNumImm);
+				ps2.setString(7, vehicule.getParking());
+				ps2.setInt(8, rNumImm);
 				ps2.executeUpdate();
 				retourGestion();
 				Alert alert = new Alert(AlertType.INFORMATION);

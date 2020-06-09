@@ -5,14 +5,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class GestionParking {
 	int rNumPar; 
@@ -25,11 +33,27 @@ public class GestionParking {
 	@FXML
 	private TextField rue;
 	@FXML
+	private ComboBox <String> ComboParking;
+	@FXML
 	private TextField arrondissement;
 	@FXML
 	private TextField rechercher;
 	
-	
+	// Table d'affichage Vehicules par parking
+				@FXML
+				private TableView<Vehicule> tableView;
+				@FXML
+				private TableColumn<Vehicule,Integer> TableImmatriculation;
+				@FXML
+				private TableColumn<Vehicule,String> TableMarque;
+				@FXML
+				private TableColumn<Vehicule,String> TableType;
+				@FXML
+				private TableColumn<Vehicule,String> TableCarburant;
+				@FXML
+				private TableColumn<Vehicule,Integer> TableCompteurKM;
+				@FXML
+				private TableColumn<Vehicule,LocalDate> TableDateMiseCirculation;
 		
 		
 	public void exitButton() {
@@ -43,6 +67,17 @@ public class GestionParking {
 		Scene scene = new Scene(root);
 		Main.stage.setScene(scene);
 		Main.stage.centerOnScreen();
+	}
+	public void AjouterParking() throws SQLException
+	{
+		String Parking = "SELECT nom FROM `parking`;";
+		Connection vC = Login.connectDB();
+		PreparedStatement vPS = vC.prepareStatement(Parking);
+		ResultSet resultSet = vPS.executeQuery();
+        while (resultSet.next())
+        {  
+            ComboParking.getItems().addAll(resultSet.getString(1)); 
+        	}
 	}
 	
 	public void ajouterParking(ActionEvent e) throws IOException, SQLException {
@@ -188,6 +223,44 @@ public class GestionParking {
 		Main.stage.setScene(scene);
 		Main.stage.centerOnScreen();
 	}
+	
+	// Liste de Vehicule par parking
+	public void interfaceVehiculeParking(ActionEvent e) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ListeVehiculeParking.fxml")));
+		root.setOnMousePressed(Main.handlerPressed);
+		root.setOnMouseDragged(Main.handlerDragged);
+		Scene scene = new Scene(root);
+		Main.stage.setScene(scene);
+		Main.stage.centerOnScreen();
+	}
+	
+	public void selectionner(ActionEvent e) throws SQLException {
+		String search = ComboParking.getValue();
+		ObservableList<Vehicule> data = FXCollections.observableArrayList();	
+		String sql = "SELECT * FROM `vehicule` WHERE `parking` ='"+search+"';";
+		Connection C = Login.connectDB();
+		PreparedStatement ps = (PreparedStatement)C.prepareStatement(sql);
+		ResultSet result = ps.executeQuery(sql);
+		while(result.next()) {
+			Vehicule vehicule = new Vehicule();
+			vehicule.setNumImmatriculation(result.getInt(1));
+			vehicule.setMarque(result.getString(2));
+			vehicule.setType(result.getString(3));
+			vehicule.setCarburant(result.getString(4));
+			vehicule.setCompteurKM(result.getInt(5));
+			vehicule.setDateMiseCirculation(result.getDate(6).toLocalDate());
+			data.add(vehicule);
+			}
+		TableImmatriculation.setCellValueFactory(new PropertyValueFactory<Vehicule,Integer>("numImmatriculation"));
+		TableMarque.setCellValueFactory(new PropertyValueFactory<Vehicule,String>("marque"));
+		TableType.setCellValueFactory(new PropertyValueFactory<Vehicule,String>("Type"));
+		TableCarburant.setCellValueFactory(new PropertyValueFactory<Vehicule,String>("carburant"));
+		TableCompteurKM.setCellValueFactory(new PropertyValueFactory<Vehicule,Integer>("compteurKM"));
+		TableDateMiseCirculation.setCellValueFactory(new PropertyValueFactory<Vehicule,LocalDate>("dateMiseCirculation"));
+		tableView.setItems(data);
+		C.close();
+	}
+	
 	public void retourGestion() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/GestionParking.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);

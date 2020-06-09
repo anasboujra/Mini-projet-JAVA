@@ -12,11 +12,15 @@ public class Vehicule {
 	private String carburant;
 	private int compteurKM;
 	private LocalDate dateMiseCirculation;
+	private String parking;
 	
 	public Vehicule() {
 		super();
 	}
-	public Vehicule(int numImmatriculation, String marque, String type, String carburant, int compteurKM, LocalDate dateMiseCirculation) {
+	
+	
+	public Vehicule(int numImmatriculation, String marque, String type, String carburant, int compteurKM,
+			LocalDate dateMiseCirculation, String parking) {
 		super();
 		this.numImmatriculation = numImmatriculation;
 		this.marque = marque;
@@ -24,7 +28,20 @@ public class Vehicule {
 		this.carburant = carburant;
 		this.compteurKM = compteurKM;
 		this.dateMiseCirculation = dateMiseCirculation;
+		this.parking = parking;
 	}
+
+
+	public String getParking() {
+		return parking;
+	}
+
+
+	public void setParking(String parking) {
+		this.parking = parking;
+	}
+
+
 	public int getNumImmatriculation() {
 		return numImmatriculation;
 	}

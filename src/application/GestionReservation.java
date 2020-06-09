@@ -44,6 +44,7 @@ public class GestionReservation {
 	@FXML
 	private ComboBox <String> comboBox;
 	
+
 	// Table d'affichage
 			@FXML
 			private TableView<Reservation> tableview;
@@ -58,7 +59,7 @@ public class GestionReservation {
 			@FXML
 			private TableColumn<Reservation,String> statusRe;
 			
-			 
+			
 			public void  statusAjouter( ) {
 			    comboBox.getItems().removeAll(comboBox.getItems());
 			    comboBox.getItems().addAll("Valide", "Non Valide");
@@ -70,7 +71,8 @@ public class GestionReservation {
 			    comboBox.getItems().addAll("Valide", "Non Valide","Annule");
 			    comboBox.getSelectionModel().select("Valide");
 			}
-
+			
+			
 
 			
 			
@@ -376,7 +378,7 @@ public class GestionReservation {
 		C.close();
 	}
 	
-
+	
  
 	
 	public void retourGestion() throws IOException {
