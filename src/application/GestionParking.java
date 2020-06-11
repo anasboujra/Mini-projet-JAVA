@@ -38,6 +38,10 @@ public class GestionParking {
 	private TextField arrondissement;
 	@FXML
 	private TextField rechercher;
+	@FXML
+	private ComboBox <String> comboVehicule;
+	@FXML
+	private ComboBox <String> comboParking;
 	
 	// Table d'affichage Vehicules par parking
 				@FXML
@@ -68,6 +72,7 @@ public class GestionParking {
 		Main.stage.setScene(scene);
 		Main.stage.centerOnScreen();
 	}
+	
 	public void AjouterParking() throws SQLException
 	{
 		String Parking = "SELECT nom FROM `parking`;";
@@ -172,7 +177,7 @@ public class GestionParking {
 			if(result.next() && parking.getnParking()!=rNumPar) {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Erreur");
-				alert.setHeaderText("Il y'a déjà un vehicule avec le même N° Immatriculation");
+				alert.setHeaderText("Il y'a déjà un parking avec le même N° Immatriculation");
 				alert.show();
 			}
 			else {
@@ -184,7 +189,7 @@ public class GestionParking {
 				ps2.setInt(3, parking.getCapacite());
 				ps2.setString(4, parking.getRue());
 				ps2.setString(5, parking.getArrondissement());	
-				ps2.setInt(7, rNumPar);
+				ps2.setInt(6, rNumPar);
 				ps2.executeUpdate();
 				retourGestion();
 				Alert alert = new Alert(AlertType.INFORMATION);
@@ -211,9 +216,106 @@ public class GestionParking {
 		retourGestion();
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Succès");
-		alert.setHeaderText("Le vehicule a été supprimé");
+		alert.setHeaderText("Le parking a été supprimé");
 		alert.show();
 	}
+	
+	public void interfaceDeposerVehicule(ActionEvent e) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("GUI/DeposerVehicule.fxml"));
+		root.setOnMousePressed(Main.handlerPressed);
+		root.setOnMouseDragged(Main.handlerDragged);
+		Scene scene = new Scene(root);
+		Main.stage.setScene(scene);
+		Main.stage.centerOnScreen();
+	}
+	
+	public void vehiculeADeposer() throws SQLException {
+		String sql = "SELECT numImmatriculation FROM vehicule WHERE parking='Aucun';";
+		Connection C = Login.connectDB();
+		PreparedStatement PS = C.prepareStatement(sql);
+		ResultSet resultSet = PS.executeQuery();
+		while (resultSet.next())
+        {  
+            comboVehicule.getItems().addAll(resultSet.getString(1));
+        }
+	}
+	
+	public void parkingChoisi() throws SQLException {
+		String sql = "SELECT nom FROM parking;";
+		Connection C = Login.connectDB();
+		PreparedStatement PS = C.prepareStatement(sql);
+		ResultSet resultSet = PS.executeQuery();
+		while (resultSet.next())
+        {  
+            comboParking.getItems().add(resultSet.getString(1));
+        }
+	}
+	
+	public void deposerVehicule(ActionEvent e) throws SQLException, IOException {
+		if(comboVehicule.getValue()!=null && comboParking.getValue()!=null) {
+			String sql = "UPDATE vehicule SET parking=? where numImmatriculation=?;";
+			Connection C = Login.connectDB();
+			PreparedStatement ps = C.prepareStatement(sql);
+			ps.setString(1, comboParking.getValue());
+			ps.setInt(2, Integer.parseInt(comboVehicule.getValue()));
+			ps.executeUpdate();
+			C.close();
+			retourGestion();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Succès");
+			alert.setHeaderText("Les données ont été enregistrées");
+			alert.show();
+		}
+		else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Erreur");
+			alert.setHeaderText("Veuillez remplir tous les champs");
+			alert.show();
+		}
+	}
+	
+	public void interfaceSortirVehicule(ActionEvent e) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("GUI/SortirVehicule.fxml"));
+		root.setOnMousePressed(Main.handlerPressed);
+		root.setOnMouseDragged(Main.handlerDragged);
+		Scene scene = new Scene(root);
+		Main.stage.setScene(scene);
+		Main.stage.centerOnScreen();
+	}
+	
+	public void vehiculeASortir() throws SQLException {
+		String sql = "SELECT numImmatriculation FROM vehicule WHERE parking!='Aucun';";
+		Connection C = Login.connectDB();
+		PreparedStatement PS = C.prepareStatement(sql);
+		ResultSet resultSet = PS.executeQuery();
+		while (resultSet.next())
+        {  
+            comboVehicule.getItems().addAll(resultSet.getString(1));
+        }
+	}
+	
+	public void sortirVehicule(ActionEvent e) throws SQLException, IOException {
+		if(comboVehicule.getValue()!=null) {
+			String sql = "UPDATE vehicule SET parking='Aucun' where numImmatriculation=?;";
+			Connection C = Login.connectDB();
+			PreparedStatement ps = C.prepareStatement(sql);
+			ps.setInt(1, Integer.parseInt(comboVehicule.getValue()));
+			ps.executeUpdate();
+			C.close();
+			retourGestion();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Succès");
+			alert.setHeaderText("Les données ont été enregistrées");
+			alert.show();
+		}
+		else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Erreur");
+			alert.setHeaderText("Veuillez remplir tous les champs");
+			alert.show();
+		}
+	}
+
 	
 	public void interfaceInfosParking(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/InfosParking.fxml")));
@@ -224,7 +326,7 @@ public class GestionParking {
 		Main.stage.centerOnScreen();
 	}
 	
-	// Liste de Vehicule par parking
+	// Liste des vehicules par parking
 	public void interfaceVehiculeParking(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ListeVehiculeParking.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);

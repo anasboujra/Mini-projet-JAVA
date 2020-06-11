@@ -14,7 +14,6 @@ public class Parking {
 
 	public Parking() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getnParking() {

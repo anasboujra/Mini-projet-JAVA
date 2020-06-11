@@ -206,7 +206,7 @@ public class GestionFacture {
 	}
 	public void actualiser(ActionEvent e) throws SQLException {
 		ObservableList<Facture> data = FXCollections.observableArrayList();	
-		String sql = "SELECT * FROM facture ORDER BY dateFacture ;";
+		String sql = "SELECT * FROM facture ORDER BY dateFacture DESC;";
 		Connection C = Login.connectDB();
 		PreparedStatement ps = (PreparedStatement)C.prepareStatement(sql);
 		ResultSet result = ps.executeQuery(sql);
