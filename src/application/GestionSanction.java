@@ -48,6 +48,11 @@ public class GestionSanction {
 		Main.stage.close();
 	}
 	
+	/*===================== Bouton de reduire la fenêtre =====================*/
+	public void minimizeButton() {
+		Main.stage.setIconified(true);
+	}
+	
 	/*===================== Charger l'interface "Clients Sanctionnes" =====================*/
 	public void interfaceClientsSanctionnes(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ClientsSanctionnes.fxml")));
