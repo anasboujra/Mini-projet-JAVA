@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 12, 2020 at 03:49 PM
+-- Generation Time: Jun 17, 2020 at 09:43 AM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 7.3.12
 
@@ -80,8 +80,10 @@ INSERT INTO `client` (`codeClient`, `nomComplet`, `adresse`, `GSM`, `permisCondu
 DROP TABLE IF EXISTS `contrat`;
 CREATE TABLE IF NOT EXISTS `contrat` (
   `codeContrat` varchar(30) NOT NULL,
+  `codeReservation` varchar(30) NOT NULL,
   `dateContrat` date NOT NULL,
   `dateEcheance` date NOT NULL,
+  `reglSanction` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`codeContrat`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -89,8 +91,9 @@ CREATE TABLE IF NOT EXISTS `contrat` (
 -- Dumping data for table `contrat`
 --
 
-INSERT INTO `contrat` (`codeContrat`, `dateContrat`, `dateEcheance`) VALUES
-('EEERR44', '2020-04-15', '2020-04-24');
+INSERT INTO `contrat` (`codeContrat`, `codeReservation`, `dateContrat`, `dateEcheance`, `reglSanction`) VALUES
+('Co123', 'R123', '2020-06-06', '2020-06-14', 0),
+('EEERR44', '1111', '2020-04-15', '2020-04-15', 0);
 
 -- --------------------------------------------------------
 
@@ -101,6 +104,7 @@ INSERT INTO `contrat` (`codeContrat`, `dateContrat`, `dateEcheance`) VALUES
 DROP TABLE IF EXISTS `facture`;
 CREATE TABLE IF NOT EXISTS `facture` (
   `codeFacture` varchar(30) NOT NULL,
+  `codeContrat` varchar(30) NOT NULL,
   `dateFacture` date NOT NULL,
   `montantPayer` double NOT NULL,
   PRIMARY KEY (`codeFacture`)
@@ -110,9 +114,9 @@ CREATE TABLE IF NOT EXISTS `facture` (
 -- Dumping data for table `facture`
 --
 
-INSERT INTO `facture` (`codeFacture`, `dateFacture`, `montantPayer`) VALUES
-('fffff', '2020-04-22', 333333),
-('ss', '2020-06-11', 4000);
+INSERT INTO `facture` (`codeFacture`, `codeContrat`, `dateFacture`, `montantPayer`) VALUES
+('fffff', '', '2020-04-22', 333333),
+('ss', '', '2020-06-11', 4000);
 
 -- --------------------------------------------------------
 
@@ -146,9 +150,12 @@ INSERT INTO `parking` (`nParking`, `nom`, `capacite`, `rue`, `arrondissement`) V
 DROP TABLE IF EXISTS `reservation`;
 CREATE TABLE IF NOT EXISTS `reservation` (
   `codeReservation` varchar(30) NOT NULL,
+  `codeClient` varchar(50) NOT NULL,
+  `numImmatriculation` int(11) NOT NULL,
   `dateReservation` date NOT NULL,
   `dateDepart` date NOT NULL,
   `dateRetour` date NOT NULL,
+  `status` varchar(30) NOT NULL,
   PRIMARY KEY (`codeReservation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -156,10 +163,11 @@ CREATE TABLE IF NOT EXISTS `reservation` (
 -- Dumping data for table `reservation`
 --
 
-INSERT INTO `reservation` (`codeReservation`, `dateReservation`, `dateDepart`, `dateRetour`) VALUES
-('1', '2020-05-15', '2020-05-21', '2020-05-30'),
-('2', '2020-05-28', '2020-05-29', '2020-05-31'),
-('ZZEEE', '2020-04-22', '2020-04-16', '2020-04-14');
+INSERT INTO `reservation` (`codeReservation`, `codeClient`, `numImmatriculation`, `dateReservation`, `dateDepart`, `dateRetour`, `status`) VALUES
+('1111', 'EEERRR', 9999, '2020-06-15', '2020-06-17', '2020-06-26', 'NonValidée'),
+('2', '', 0, '2020-05-28', '2020-05-29', '2020-05-31', ''),
+('R123', 'C123', 123, '2020-06-03', '2020-06-05', '2020-06-10', 'validee'),
+('ZZEEE', '', 0, '2020-04-22', '2020-04-16', '2020-04-14', '');
 
 -- --------------------------------------------------------
 
@@ -185,7 +193,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
 
 INSERT INTO `utilisateur` (`cin`, `password`, `nom`, `prenom`, `email`, `adresse`, `suspendre`) VALUES
 ('A1000', '0000', 'Guijan', 'Soulaymane', 'G.Soulaymane@email.com', 'Tiznit bol3man zen9a 19,5', 'continuer'),
-('a', 'a', 'a', 'a', 'a', 'a', 'continuer'),
+('a', '12', 'a', 'a', 'a', 'a', 'continuer'),
 ('jnig', 'y', 'ujyja', 'uèjfy', '_kyig', 'uih', 'continuer'),
 ('fsf', 'lzsj', 'dj', 'dj', 'dl', 'ldgg', 'continuer'),
 ('sdf', 'sdf', 'sdf', 'sdf', 'sdfsd', 'sdf', 'continuer'),

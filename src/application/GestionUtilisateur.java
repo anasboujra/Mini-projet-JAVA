@@ -35,11 +35,17 @@ public class GestionUtilisateur {
 	@FXML
 	private Label suspendre;
 	
+	/*===================== Bouton de fermeture de la fenêtre =====================*/
 	public void exitButton() {
 		Main.stage.close();
 	}
 	
+	/*===================== Bouton de reduire la fenêtre =====================*/
+	public void minimizeButton() {
+		Main.stage.setIconified(true);
+	}
 	
+	/*===================== Charger l'interface "Ajouter un utilisateur" =====================*/
 	public void interfaceAjouterUtilisateur(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/AjouterUtilisateur.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -49,6 +55,8 @@ public class GestionUtilisateur {
 		Main.stage.centerOnScreen();
 	}
 	
+
+	/*===================== Bouton d'ajouter l'utilisateur =====================*/
 	public void ajouterUtilisateur(ActionEvent e) throws IOException, SQLException {
 		if(!cin.getText().equals("") && !password.getText().equals("") && !nom.getText().equals("") && !prenom.getText().equals("") && !email.getText().equals("") && !adresse.getText().equals("")) {
 			String userSql = "SELECT * FROM `utilisateur` WHERE cin='"+cin.getText()+"';";
@@ -89,7 +97,7 @@ public class GestionUtilisateur {
 		}
 	}
 	
-	
+	/*===================== Charger l'interface "Modifier/Supprimer un utilisateur" =====================*/
 	public void interfaceModifierUtilisateur(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ModifierUtilisateur.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -99,6 +107,7 @@ public class GestionUtilisateur {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Bouton de rechercher une reservation par CIN (modifier/suppimer)=====================*/
 	public void rechercherUtilisateurModifier(ActionEvent e) throws SQLException {
 		String rCIN = rechercher.getText();
 		String sql = "SELECT * FROM `utilisateur` WHERE cin='"+rCIN+"';";
@@ -122,6 +131,7 @@ public class GestionUtilisateur {
 		C.close();
 	}
 	
+	/*===================== Bouton de modifier l'utilisateur =====================*/
 	public void modifierUtilisateur(ActionEvent e) throws IOException, SQLException {
 		if(!cin.getText().equals("") && !password.getText().equals("") && !nom.getText().equals("") 
 				&& !prenom.getText().equals("") && !email.getText().equals("") && !adresse.getText().equals("")) {
@@ -165,6 +175,7 @@ public class GestionUtilisateur {
 		}
 	}
 	
+	/*===================== Bouton de supprimer l'utilisateur =====================*/
 	public void supprimerUtilisateur(ActionEvent e) throws SQLException, IOException {
 		String sql = "DELETE FROM `utilisateur` WHERE cin=?;";
 		Connection C = Login.connectDB();
@@ -180,6 +191,7 @@ public class GestionUtilisateur {
 	}
 
 	
+	/*===================== Charger l'interface "Suspendre un utilisateur" =====================*/
 	public void interfaceSuspendreUtilisateur(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/SuspendreUtilisateur.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -188,6 +200,8 @@ public class GestionUtilisateur {
 		Main.stage.setScene(scene);
 		Main.stage.centerOnScreen();
 	}
+	
+	/*===================== Bouton de rechercher un utlisateur par cin (Suspendre/Continuer)=====================*/
 	public void rechercherUtilisateurSuspendre(ActionEvent e) throws SQLException {
 		String rCIN = rechercher.getText();
 		String sql = "SELECT `suspendre` FROM `utilisateur` WHERE cin='"+rCIN+"';";
@@ -211,6 +225,7 @@ public class GestionUtilisateur {
 		C.close();
 	}
 	
+	/*===================== Bouton du suspendre un utilisateur=====================*/
 	public void suspendreUtilisateur() throws SQLException, IOException {
 		if(suspendre.getText()=="Suspendre"){
 			String sql = "UPDATE `utilisateur` SET `suspendre`=?  WHERE `cin`=?;";
@@ -242,7 +257,7 @@ public class GestionUtilisateur {
 		}
 	}
 	
-		
+	/*===================== Bouton de retour au menu de gestion =====================*/
 	public void retourGestion() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/GestionUtilisateur.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -252,6 +267,7 @@ public class GestionUtilisateur {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Bouton de retour au menu principal =====================*/
 	public void retourMenu() throws IOException {
 		Parent root;
 		if(Main.ad) {

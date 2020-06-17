@@ -63,11 +63,17 @@ public class GestionClient {
 	@FXML
 	private TableColumn<Client,Integer> numero;
 
-	
+	/*===================== Bouton de fermeture de la fenêtre =====================*/
 	public void exitButton() {
 		Main.stage.close();
 	}
 	
+	/*===================== Bouton de reduire la fenêtre =====================*/
+	public void minimizeButton() {
+		Main.stage.setIconified(true);
+	}
+	
+	/*===================== Charger l'interface "Ajouter un client" =====================*/
 	public void interfaceAjouterClient(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/AjouterClient.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -77,6 +83,7 @@ public class GestionClient {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Bouton d'ajouter le client =====================*/
 	public void ajouterClient(ActionEvent e) throws IOException, SQLException {
 		if(is!=null && !codeClient.getText().equals("") && !nomComplet.getText().equals("") && !adresse.getText().equals("") && !nGSM.getText().equals("")  ) 
 		{
@@ -120,7 +127,7 @@ public class GestionClient {
 		}
 	}
 	
-	
+	/*===================== Charger l'interface "Modifier/Supprimer un client" =====================*/
 	public void interfaceModifierClient(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ModifierClient.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -129,7 +136,8 @@ public class GestionClient {
 		Main.stage.setScene(scene);
 		Main.stage.centerOnScreen();
 	}
-
+	
+	/*===================== Bouton de rechercher un client par nom (modifier/suppimer)=====================*/
 	public void rechercherClient() throws SQLException {
 		rNomComplet = rechercher.getText();
 		String sql = "SELECT * FROM client WHERE nomComplet='"+rNomComplet+"';";
@@ -154,6 +162,7 @@ public class GestionClient {
 		C.close();
 	}
 	
+	/*===================== Bouton de modifier les informations de le client =====================*/
 	public void modifierClient(ActionEvent e) throws IOException, SQLException {
 		if(!codeClient.getText().equals("") && !nomComplet.getText().equals("") && !adresse.getText().equals("") 
 				&& !nGSM.getText().equals("")) {
@@ -222,6 +231,7 @@ public class GestionClient {
 		}
 	}
 	
+	/*===================== Bouton de supprimer le client =====================*/
 	public void supprimerClient(ActionEvent e) throws SQLException, IOException {
 		String sql = "DELETE FROM `client` WHERE nomComplet=?;";
 		Connection C = Login.connectDB();
@@ -236,7 +246,7 @@ public class GestionClient {
 		alert.show();
 	}
 	
-	
+	/*===================== Charger l'interface "informations d'un client" =====================*/
 	public void interfaceInfosClient(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/InfosClient.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -246,6 +256,7 @@ public class GestionClient {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Charger l'interface "informations des clients par ordre alphabetique" =====================*/
 	public void interfaceClientsAlpha(ActionEvent e) throws IOException, SQLException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ClientsAlpha.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -255,6 +266,7 @@ public class GestionClient {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Charger les données dans l'interface "informations des clients par ordre alphabetique" =====================*/
 	public void actualiser(ActionEvent e) throws SQLException {
 		ObservableList<Client> data = FXCollections.observableArrayList();	
 		String sql = "SELECT * FROM client ORDER BY codeClient;";
@@ -280,7 +292,7 @@ public class GestionClient {
 	
 	
 	
-
+	/*===================== Bouton de charger l'image du client =====================*/
 	public void browse(ActionEvent e) throws FileNotFoundException{
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("IMAGES", "*.JPEG", "*.JPG", "*.PNG", "*.GIF", "*.TIFF"));
 		selectedFile = fileChooser.showOpenDialog(null);
@@ -296,6 +308,7 @@ public class GestionClient {
     	
 	}
 	
+	/*===================== Bouton de retour au menu de gestion =====================*/
 	public void retourGestion() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/GestionClient.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -305,6 +318,7 @@ public class GestionClient {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Bouton de retour au menu principal =====================*/
 	public void retourMenu() throws IOException {
 		Parent root;
 		if(Main.ad) {

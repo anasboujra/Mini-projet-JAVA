@@ -141,7 +141,7 @@ public class GestionContrat {
 	public void modifierContrat(ActionEvent e) throws IOException, SQLException {
 		if(!codeContrat.getText().equals("") &&  dateContrat.getValue()!=null && dateEcheance.getValue()!=null) {
 			
-			Contrat contrat = new Contrat(codeContrat.getText(),dateContrat.getValue(),dateEcheance.getValue());
+			Contrat contrat = new Contrat(codeContrat.getText(),"" ,dateContrat.getValue(),dateEcheance.getValue());
 			String sql = "SELECT `codeContrat` FROM `contrat` WHERE codeContrat='"+contrat.getCodeContrat()+"';";
 			Connection C = Login.connectDB();
 			PreparedStatement ps = C.prepareStatement(sql);
