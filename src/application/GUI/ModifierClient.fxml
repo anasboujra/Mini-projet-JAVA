@@ -101,7 +101,7 @@
          </font>
       </Button>
       <ImageView fx:id="image" fitHeight="155.0" fitWidth="155.0" layoutX="176.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="selectionner" layoutX="198.0" layoutY="304.0" mnemonicParsing="false" onAction="#browse" prefHeight="26.0" prefWidth="104.0" styleClass="Button2" text="Modifier" textFill="WHITE">
+      <Button fx:id="selectionner" layoutX="202.0" layoutY="304.0" mnemonicParsing="false" onAction="#browse" prefHeight="26.0" prefWidth="104.0" styleClass="Button2" text="Modifier" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -117,5 +117,13 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
+      <Label alignment="CENTER" layoutX="447.0" layoutY="-8.0" onMouseClicked="#minimizeButton" opacity="0.88" prefHeight="33.0" prefWidth="17.0" text="-" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="40.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
    </children>
 </AnchorPane>

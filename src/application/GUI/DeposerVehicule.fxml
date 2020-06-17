@@ -22,17 +22,19 @@
          <font>
             <Font name="System Bold" size="27.0" />
          </font></Label>
+      <Separator layoutX="130.0" layoutY="122.0" opacity="0.11" prefHeight="1.0" prefWidth="441.0" />
       <Label layoutX="175.0" layoutY="178.0" styleClass="Label" text="Vehicule">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
+      <ComboBox fx:id="comboVehicule" layoutX="350.0" layoutY="178.0" onShown="#vehiculeADeposer" prefHeight="30.0" prefWidth="195.0" visibleRowCount="6" />
       <Label layoutX="179.0" layoutY="285.0" styleClass="Label" text="Parking">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <ComboBox fx:id="comboVehicule" layoutX="350.0" layoutY="178.0" onShown="#vehiculeADeposer" prefHeight="30.0" prefWidth="195.0" visibleRowCount="6" />
+      <ComboBox fx:id="comboParking" layoutX="350.0" layoutY="285.0" onShown="#parkingChoisi" prefHeight="30.0" prefWidth="195.0" visibleRowCount="6" />
       <Button layoutX="377.0" layoutY="417.0" mnemonicParsing="false" onAction="#deposerVehicule" prefHeight="26.0" prefWidth="112.0" styleClass="Button" text="Déposer" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -49,7 +51,13 @@
             <Font name="System Bold" size="17.0" />
          </font>
       </Button>
-      <ComboBox fx:id="comboParking" layoutX="350.0" layoutY="285.0" onShown="#parkingChoisi" prefHeight="30.0" prefWidth="195.0" visibleRowCount="6" />
-      <Separator layoutX="130.0" layoutY="122.0" opacity="0.11" prefHeight="1.0" prefWidth="441.0" />
+      <Label alignment="CENTER" layoutX="640.0" layoutY="-11.0" onMouseClicked="#minimizeButton" opacity="0.88" prefHeight="33.0" prefWidth="17.0" text="-" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="40.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
    </children>
 </AnchorPane>

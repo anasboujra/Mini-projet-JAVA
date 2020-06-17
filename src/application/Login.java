@@ -35,14 +35,17 @@ public class Login {
 	@FXML
 	private PasswordField cle;
 	
+	/*===================== Bouton de fermeture de la fenêtre =====================*/
 	public void exitButton() {
 		Main.stage.close();
 	}
 	
+	/*===================== Bouton de reduire la fenêtre =====================*/
 	public void minimizeButton() {
 		Main.stage.setIconified(true);
 	}
 	
+	/*===================== connection a la base de donnees =====================*/
 	public static Connection connectDB(){
 		Connection C = null;
 		try {
@@ -54,6 +57,7 @@ public class Login {
 		return C;
 	}
 	
+	/*===================== etat de la connection =====================*/
 	public void connectionStat(ActionEvent e) throws SQLException{
 		if(!Login.connectDB().isClosed())
 			connectionLabel.setText("connecté");
@@ -61,6 +65,7 @@ public class Login {
 			connectionLabel.setText("pas connecté");
 	}
 	
+	/*===================== pour le button "ENTRER" =====================*/
 	public void enterKey() {
 		username.setOnKeyPressed(new EventHandler<KeyEvent>() {
 		    @Override
@@ -92,6 +97,7 @@ public class Login {
 		});
 	}
 	
+	/*===================== Bouton de connection de l'utilisateur =====================*/
 	public void loginButton() throws IOException, SQLException {
 		String adminSql = "SELECT * FROM `administrateur` WHERE username='"+username.getText()+"';";
 		Connection adminC = Login.connectDB();
@@ -137,12 +143,15 @@ public class Login {
 				}
 			}
 			else {
-				new Message().alert("L'identifiant ou le mot de passe est incorrect");
-				Message.alerte.setText("ok");
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Erreur");
+				alert.setHeaderText("L'identifiant ou le mot de passe est incorrect");
+				alert.show();
 			}
 		}
 	}
 	
+	/*===================== Charger l'interface "mot de passe oublie" =====================*/
 	public void interfaceMotDePasseOublie() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/MotDePasseOublie.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -152,6 +161,7 @@ public class Login {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== le button de changer le mot de passe oublie =====================*/
 	public void changer(ActionEvent e) throws IOException, SQLException {
 		if( !username.getText().equals("") && !cle.getText().equals("") && !password.getText().equals("") && 
 				!password2.getText().equals("") ) 
@@ -235,7 +245,7 @@ public class Login {
 		}
 	}
 	
-	
+	/*===================== Bouton de retour au menu de connection =====================*/
 	public void retourLogin() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/Login.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);

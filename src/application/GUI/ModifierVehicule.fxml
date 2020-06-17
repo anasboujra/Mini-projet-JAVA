@@ -25,35 +25,6 @@
             <Font size="34.0" />
          </font>
       </Label>
-      <Label layoutX="11.0" layoutY="452.0" styleClass="Label" text="Date de mise en circulation">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Label>
-      <DatePicker fx:id="dateMiseCirculation" layoutX="223.0" layoutY="450.0" prefHeight="27.0" prefWidth="235.0" />
-      <Label layoutX="11.0" layoutY="400.0" prefHeight="26.0" prefWidth="133.0" styleClass="Label" text="Compteur de KM">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Label>
-      <Label layoutX="15.0" layoutY="344.0" styleClass="Label" text="Carburant">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Label>
-      <Label layoutX="17.0" layoutY="281.0" styleClass="Label" text="Type">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Label>
-      <Label layoutX="22.0" layoutY="170.0" styleClass="Label" text="N° Immatriculation">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Label>
-      <TextField fx:id="numImmatriculation" layoutX="217.0" layoutY="168.0" prefHeight="32.0" prefWidth="235.0" styleClass="TextField" />
-      <TextField fx:id="type" layoutX="217.0" layoutY="274.0" prefHeight="32.0" prefWidth="235.0" styleClass="TextField" />
-      <TextField fx:id="compteurKM" layoutX="217.0" layoutY="393.0" prefHeight="32.0" prefWidth="235.0" styleClass="TextField" />
       <Separator layoutY="104.0" opacity="0.11" prefHeight="3.0" prefWidth="500.0" />
       <Label layoutX="25.0" layoutY="115.0" styleClass="Label" text="Rechercher (N° Immatriculation)">
          <font>
@@ -98,12 +69,49 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <ComboBox fx:id="comboMarque" layoutX="218.0" layoutY="220.0" onShown="#ajouterMarque" prefHeight="30.0" prefWidth="235.0" visibleRowCount="8" />
-      <Label layoutX="19.0" layoutY="223.0" styleClass="Label" text="Marque">
+      <Label alignment="CENTER" layoutX="445.0" layoutY="-8.0" onMouseClicked="#minimizeButton" opacity="0.88" prefHeight="33.0" prefWidth="17.0" text="-" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="40.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Label layoutX="27.0" layoutY="186.0" styleClass="Label" text="N° Immatriculation">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <ComboBox fx:id="comboCarburant" layoutX="221.0" layoutY="332.0" onShown="#ajouterCarburant" prefHeight="27.0" prefWidth="235.0" visibleRowCount="8" />
+      <TextField fx:id="numImmatriculation" layoutX="237.0" layoutY="186.0" prefHeight="32.0" prefWidth="235.0" styleClass="TextField" />
+      <Label layoutX="27.0" layoutY="241.0" styleClass="Label" text="Marque">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="comboMarque" layoutX="237.0" layoutY="241.0" onShown="#ajouterMarque" prefHeight="27.0" prefWidth="235.0" visibleRowCount="8" />
+      <Label layoutX="27.0" layoutY="296.0" styleClass="Label" text="Type">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <TextField fx:id="type" layoutX="237.0" layoutY="296.0" prefHeight="32.0" prefWidth="235.0" styleClass="TextField" />
+      <Label layoutX="27.0" layoutY="351.0" styleClass="Label" text="Carburant">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="comboCarburant" layoutX="237.0" layoutY="351.0" onShown="#ajouterCarburant" prefHeight="27.0" prefWidth="235.0" visibleRowCount="8" />
+      <Label layoutX="27.0" layoutY="406.0" prefHeight="26.0" prefWidth="133.0" styleClass="Label" text="Compteur de KM">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <TextField fx:id="compteurKM" layoutX="237.0" layoutY="406.0" prefHeight="32.0" prefWidth="235.0" styleClass="TextField" />
+      <Label layoutX="27.0" layoutY="461.0" prefHeight="26.0" prefWidth="212.0" styleClass="Label" text="Date de mise en circulation">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="dateMiseCirculation" layoutX="237.0" layoutY="461.0" prefHeight="27.0" prefWidth="235.0" />
    </children>
 </AnchorPane>

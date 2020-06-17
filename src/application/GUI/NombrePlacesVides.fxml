@@ -22,7 +22,22 @@
          <font>
             <Font name="System Bold" size="27.0" />
          </font></Label>
+      <Separator layoutX="130.0" layoutY="122.0" opacity="0.11" prefHeight="1.0" prefWidth="441.0" />
       <Label layoutX="116.0" layoutY="177.0" styleClass="Label" text="Parking">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="comboParking" layoutX="261.0" layoutY="181.0" onShown="#ajouterParkings" prefHeight="27.0" prefWidth="201.0" visibleRowCount="6" />
+      <Button layoutX="546.0" layoutY="177.0" mnemonicParsing="false" onAction="#afficherNombrePlacesVides" prefHeight="38.0" prefWidth="73.0" styleClass="Button" text="OK" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Button>
+      <Label fx:id="placesVides" alignment="CENTER" layoutX="127.0" layoutY="264.0" prefHeight="38.0" prefWidth="475.0" styleClass="Label">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
@@ -35,20 +50,13 @@
             <Font name="System Bold" size="17.0" />
          </font>
       </Button>
-      <ComboBox fx:id="comboParking" layoutX="261.0" layoutY="181.0" onShown="#ajouterParkings" prefHeight="27.0" prefWidth="201.0" visibleRowCount="6" />
-      <Separator layoutX="130.0" layoutY="122.0" opacity="0.11" prefHeight="1.0" prefWidth="441.0" />
-      <Label fx:id="placesVides" alignment="CENTER" layoutX="127.0" layoutY="264.0" prefHeight="38.0" prefWidth="475.0" styleClass="Label">
+      <Label alignment="CENTER" layoutX="645.0" layoutY="-11.0" onMouseClicked="#minimizeButton" opacity="0.88" prefHeight="33.0" prefWidth="17.0" text="-" textFill="WHITE">
          <font>
-            <Font name="System Bold" size="20.0" />
+            <Font name="System Bold" size="40.0" />
          </font>
-      </Label>
-      <Button layoutX="546.0" layoutY="177.0" mnemonicParsing="false" onAction="#afficherNombrePlacesVides" prefHeight="38.0" prefWidth="73.0" styleClass="Button" text="OK" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
-         <font>
-            <Font name="System Bold" size="17.0" />
-         </font>
-      </Button>
+      </Label>
    </children>
 </AnchorPane>

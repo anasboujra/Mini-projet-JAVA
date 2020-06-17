@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 17, 2020 at 09:43 AM
+-- Generation Time: Jun 17, 2020 at 07:08 PM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 7.3.12
 
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `facture` (
 
 INSERT INTO `facture` (`codeFacture`, `codeContrat`, `dateFacture`, `montantPayer`) VALUES
 ('fffff', '', '2020-04-22', 333333),
-('ss', '', '2020-06-11', 4000);
+('ss', 'Co123', '2020-06-11', 4000);
 
 -- --------------------------------------------------------
 
@@ -193,7 +193,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
 
 INSERT INTO `utilisateur` (`cin`, `password`, `nom`, `prenom`, `email`, `adresse`, `suspendre`) VALUES
 ('A1000', '0000', 'Guijan', 'Soulaymane', 'G.Soulaymane@email.com', 'Tiznit bol3man zen9a 19,5', 'continuer'),
-('a', '12', 'a', 'a', 'a', 'a', 'continuer'),
+('a', '123', 'a', 'a', 'a', 'a', 'continuer'),
 ('jnig', 'y', 'ujyja', 'uèjfy', '_kyig', 'uih', 'continuer'),
 ('fsf', 'lzsj', 'dj', 'dj', 'dl', 'ldgg', 'continuer'),
 ('sdf', 'sdf', 'sdf', 'sdf', 'sdfsd', 'sdf', 'continuer'),

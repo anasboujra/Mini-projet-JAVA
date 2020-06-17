@@ -267,7 +267,7 @@ public class GestionReservation {
 		alert.show();
 	}
 	
-	/*===================== Charger l'interface "informations une reservation" =====================*/
+	/*===================== Charger l'interface "informations d'une reservation" =====================*/
 	public void interfaceInfosReservation(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/InfosReservation.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);

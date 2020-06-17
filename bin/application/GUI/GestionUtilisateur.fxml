@@ -12,7 +12,7 @@
          <font>
             <Font name="System Bold" size="27.0" />
          </font></Label>
-      <Button layoutX="224.0" layoutY="141.0" mnemonicParsing="false" onAction="#interfaceAjouterUtilisateur" prefHeight="42.0" prefWidth="252.0" styleClass="Button" text="Ajouter Un Utilisateur">
+      <Button layoutX="180.0" layoutY="145.0" mnemonicParsing="false" onAction="#interfaceAjouterUtilisateur" prefHeight="42.0" prefWidth="340.0" styleClass="Button" text="Ajouter Un Utilisateur">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
@@ -47,6 +47,14 @@
       <Label layoutX="559.0" layoutY="456.0" onMouseClicked="#retourMenu" styleClass="Title" text="Retour au menu→">
          <font>
             <Font size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Label alignment="CENTER" layoutX="644.0" layoutY="-11.0" onMouseClicked="#minimizeButton" opacity="0.88" prefHeight="33.0" prefWidth="17.0" text="-" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="40.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />

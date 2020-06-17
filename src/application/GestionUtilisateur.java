@@ -54,7 +54,6 @@ public class GestionUtilisateur {
 		Main.stage.setScene(scene);
 		Main.stage.centerOnScreen();
 	}
-	
 
 	/*===================== Bouton d'ajouter l'utilisateur =====================*/
 	public void ajouterUtilisateur(ActionEvent e) throws IOException, SQLException {
@@ -190,7 +189,6 @@ public class GestionUtilisateur {
 		alert.show();
 	}
 
-	
 	/*===================== Charger l'interface "Suspendre un utilisateur" =====================*/
 	public void interfaceSuspendreUtilisateur(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/SuspendreUtilisateur.fxml")));

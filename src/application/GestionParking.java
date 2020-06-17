@@ -24,7 +24,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class GestionParking {
+	
 	int rNumPar; 
+	
 	@FXML
 	private TextField nParking;
 	@FXML
@@ -60,11 +62,17 @@ public class GestionParking {
 	@FXML
 	private TableColumn<Vehicule,LocalDate> TableDateMiseCirculation;
 		
-		
+	/*===================== Bouton de fermeture de la fenêtre =====================*/
 	public void exitButton() {
 		Main.stage.close();
 	}
 	
+	/*===================== Bouton de reduire la fenêtre =====================*/
+	public void minimizeButton() {
+		Main.stage.setIconified(true);
+	}
+	
+	/*===================== Charger l'interface "Ajouter Un Parking" ==================*/
 	public void interfaceAjouterParking(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/AjouterParking.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -74,6 +82,7 @@ public class GestionParking {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Liste des parkings dans le ComboBox =====================*/
 	public void ajouterParkings() throws SQLException {
 		String Parking = "SELECT nom FROM `parking`;";
 		Connection vC = Login.connectDB();
@@ -84,6 +93,7 @@ public class GestionParking {
         }
 	}
 
+	/*===================== Bouton d'ajouter le parking =====================*/
 	public void ajouterParking(ActionEvent e) throws IOException, SQLException {
 		if(!nParking.getText().equals("") && !nomParking.getText().equals("") && !capaciteParking.getText().equals("") 
 				&& !rue.getText().equals("")  && !arrondissement.getText().equals("") ) 
@@ -130,6 +140,7 @@ public class GestionParking {
 		}
 	}
 	
+	/*===================== Charger l'interface "Modifier/Supprimer Un Parking" ==================*/
 	public void interfaceModifierParking(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ModifierParking.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -139,6 +150,7 @@ public class GestionParking {
 		Main.stage.centerOnScreen();
 	}
 
+	/*===================== Bouton de rechercher un parking par num =====================*/
 	public void rechercherParking() throws SQLException {
 		rNumPar = Integer.parseInt(rechercher.getText());
 		String sql = "SELECT * FROM parking WHERE nParking='"+ rNumPar +"';";
@@ -161,6 +173,7 @@ public class GestionParking {
 		C.close();
 	}
 	
+	/*===================== Bouton de modifier le parking =====================*/
 	public void modifierParking(ActionEvent e) throws IOException, SQLException {
 		if(!nParking.getText().equals("") && !nomParking.getText().equals("") && !capaciteParking.getText().equals("") 
 				&& !rue.getText().equals("")  && !arrondissement.getText().equals("") )
@@ -205,6 +218,7 @@ public class GestionParking {
 		}
 	}
 	
+	/*===================== Bouton de supprimer le parking =====================*/
 	public void supprimerParking(ActionEvent e) throws SQLException, IOException {
 		String sql = "DELETE FROM `parking` WHERE nParking=?;";
 		Connection C = Login.connectDB();
@@ -219,6 +233,7 @@ public class GestionParking {
 		alert.show();
 	}
 	
+	/*===================== Charger l'interface "Déposer un véhicule dans un parking" ==================*/
 	public void interfaceDeposerVehicule(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("GUI/DeposerVehicule.fxml"));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -228,6 +243,7 @@ public class GestionParking {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Charger l'interface "Le nombre de places vides par parking" ==================*/
 	public void interfaceNombrePlacesVides(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/NombrePlacesVides.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -237,6 +253,7 @@ public class GestionParking {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Calculer le nombre de places vides par le nom d'un parking =====================*/
 	public int nombrePlacesVides(String nom) throws SQLException {
 		String npSQL = "SELECT capacite FROM parking WHERE nom=?;";
 		Connection C = Login.connectDB();
@@ -256,11 +273,13 @@ public class GestionParking {
 		return capacite-nVehicules;
 	}
 	
+	/*===================== Afficher le nombre de place vides d'un parking =====================*/
 	public void afficherNombrePlacesVides() throws SQLException {
 		int n = nombrePlacesVides(comboParking.getValue());
 		placesVides.setText("Le nombre de places vides dans ce parking: "+n);
 	}
 	
+	/*===================== Liste des vehicules a deposer =====================*/
 	public void vehiculeADeposer() throws SQLException {
 		String sql = "SELECT numImmatriculation FROM vehicule WHERE parking='Aucun';";
 		Connection C = Login.connectDB();
@@ -272,6 +291,7 @@ public class GestionParking {
         }
 	}
 	
+	/*===================== Liste des parking dans le combox =====================*/
 	public void parkingChoisi() throws SQLException {
 		String sql = "SELECT nom FROM parking;";
 		Connection C = Login.connectDB();
@@ -283,6 +303,7 @@ public class GestionParking {
         }
 	}
 	
+	/*===================== le button de deposer un vehicule =====================*/
 	public void deposerVehicule(ActionEvent e) throws SQLException, IOException {
 		if(comboVehicule.getValue()==null || comboParking.getValue()==null) {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -312,6 +333,7 @@ public class GestionParking {
 		}
 	}
 	
+	/*===================== Charger l'interface "Faire sortir un véhicule d’un parking" ==================*/
 	public void interfaceSortirVehicule(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("GUI/SortirVehicule.fxml"));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -321,6 +343,7 @@ public class GestionParking {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Liste des vehicules a sortir =====================*/
 	public void vehiculeASortir() throws SQLException {
 		String sql = "SELECT numImmatriculation FROM vehicule WHERE parking!='Aucun';";
 		Connection C = Login.connectDB();
@@ -332,6 +355,7 @@ public class GestionParking {
         }
 	}
 	
+	/*===================== le button de sortir un vehicule =====================*/
 	public void sortirVehicule(ActionEvent e) throws SQLException, IOException {
 		if(comboVehicule.getValue()!=null) {
 			String sql = "UPDATE vehicule SET parking='Aucun' where numImmatriculation=?;";
@@ -354,7 +378,7 @@ public class GestionParking {
 		}
 	}
 
-	
+	/*===================== Charger l'interface "Afficher les informations d'un parking" ==================*/
 	public void interfaceInfosParking(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/InfosParking.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -364,7 +388,7 @@ public class GestionParking {
 		Main.stage.centerOnScreen();
 	}
 	
-	// Liste des vehicules par parking
+	/*===================== Charger l'interface "La liste de véhicules par parking" ==================*/
 	public void interfaceVehiculeParking(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ListeVehiculeParking.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -374,6 +398,7 @@ public class GestionParking {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Afficher les informations du parking choisi =====================*/
 	public void selectionner(ActionEvent e) throws SQLException {
 		String search = comboParking.getValue();
 		ObservableList<Vehicule> data = FXCollections.observableArrayList();	
@@ -401,6 +426,7 @@ public class GestionParking {
 		C.close();
 	}
 	
+	/*===================== Bouton de retour au menu de gestion =====================*/
 	public void retourGestion() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/GestionParking.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -410,6 +436,7 @@ public class GestionParking {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Bouton de retour au menu principal =====================*/
 	public void retourMenu() throws IOException {
 		Parent root;
 		if(Main.ad) {
@@ -423,6 +450,5 @@ public class GestionParking {
 		Scene scene = new Scene(root);
 		Main.stage.setScene(scene);
 		Main.stage.centerOnScreen();
-
 	}
 }

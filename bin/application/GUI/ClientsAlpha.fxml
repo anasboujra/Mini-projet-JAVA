@@ -40,5 +40,13 @@
          </cursor>
       </Label>
       <Button layoutX="609.0" layoutY="50.0" mnemonicParsing="false" onAction="#actualiser" text="Actualiser" />
+      <Label alignment="CENTER" layoutX="645.0" layoutY="-12.0" onMouseClicked="#minimizeButton" opacity="0.88" prefHeight="33.0" prefWidth="17.0" text="-" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="40.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
    </children>
 </AnchorPane>

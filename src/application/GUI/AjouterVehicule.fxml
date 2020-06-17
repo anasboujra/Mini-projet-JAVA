@@ -26,42 +26,42 @@
          </font>
       </Label>
       <Separator layoutX="101.0" layoutY="113.0" opacity="0.11" prefHeight="2.0" prefWidth="299.0" />
-      <Label layoutX="26.0" layoutY="141.0" styleClass="Label" text="N° Immatriculation">
+      <Label layoutX="25.0" layoutY="154.0" styleClass="Label" text="N° Immatriculation">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <TextField fx:id="numImmatriculation" layoutX="229.0" layoutY="136.0" prefHeight="32.0" prefWidth="241.0" styleClass="TextField" />
-      <Label layoutX="26.0" layoutY="196.0" styleClass="Label" text="Marque">
+      <TextField fx:id="numImmatriculation" layoutX="235.0" layoutY="154.0" prefHeight="32.0" prefWidth="235.0" styleClass="TextField" />
+      <Label layoutX="25.0" layoutY="209.0" styleClass="Label" text="Marque">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <ComboBox fx:id="comboMarque" layoutX="230.0" layoutY="193.0" onShown="#ajouterMarque" prefHeight="27.0" prefWidth="235.0" visibleRowCount="8" />
-      <Label layoutX="28.0" layoutY="255.0" styleClass="Label" text="Type">
+      <ComboBox fx:id="comboMarque" layoutX="235.0" layoutY="209.0" onShown="#ajouterMarque" prefHeight="27.0" prefWidth="235.0" visibleRowCount="8" />
+      <Label layoutX="25.0" layoutY="264.0" styleClass="Label" text="Type">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <TextField fx:id="type" layoutX="237.0" layoutY="247.0" prefHeight="32.0" prefWidth="235.0" styleClass="TextField" />
-      <Label layoutX="27.0" layoutY="312.0" styleClass="Label" text="Carburant">
+      <TextField fx:id="type" layoutX="235.0" layoutY="264.0" prefHeight="32.0" prefWidth="235.0" styleClass="TextField" />
+      <Label layoutX="25.0" layoutY="319.0" styleClass="Label" text="Carburant">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <ComboBox fx:id="comboCarburant" layoutX="234.0" layoutY="306.0" onShown="#ajouterCarburant" prefHeight="27.0" prefWidth="235.0" visibleRowCount="8" />
-      <Label layoutX="23.0" layoutY="364.0" prefHeight="26.0" prefWidth="133.0" styleClass="Label" text="Compteur de KM">
+      <ComboBox fx:id="comboCarburant" layoutX="235.0" layoutY="319.0" onShown="#ajouterCarburant" prefHeight="27.0" prefWidth="235.0" visibleRowCount="8" />
+      <Label layoutX="25.0" layoutY="374.0" prefHeight="26.0" prefWidth="133.0" styleClass="Label" text="Compteur de KM">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <TextField fx:id="compteurKM" layoutX="239.0" layoutY="361.0" prefHeight="32.0" prefWidth="235.0" styleClass="TextField" />
-      <Label layoutX="24.0" layoutY="422.0" prefHeight="26.0" prefWidth="212.0" styleClass="Label" text="Date de mise en circulation">
+      <TextField fx:id="compteurKM" layoutX="235.0" layoutY="374.0" prefHeight="32.0" prefWidth="235.0" styleClass="TextField" />
+      <Label layoutX="25.0" layoutY="429.0" prefHeight="26.0" prefWidth="212.0" styleClass="Label" text="Date de mise en circulation">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <DatePicker fx:id="dateMiseCirculation" layoutX="237.0" layoutY="422.0" prefHeight="27.0" prefWidth="235.0" />
+      <DatePicker fx:id="dateMiseCirculation" layoutX="235.0" layoutY="429.0" prefHeight="27.0" prefWidth="235.0" />
       <Button layoutX="282.0" layoutY="523.0" mnemonicParsing="false" onAction="#ajouterVehicule" prefHeight="26.0" prefWidth="112.0" styleClass="Button" text="Enregistrer" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -78,5 +78,13 @@
             <Font name="System Bold" size="17.0" />
          </font>
       </Button>
+      <Label alignment="CENTER" layoutX="443.0" layoutY="-8.0" onMouseClicked="#minimizeButton" opacity="0.88" prefHeight="33.0" prefWidth="17.0" text="-" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="40.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
    </children>
 </AnchorPane>

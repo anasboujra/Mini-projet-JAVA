@@ -28,7 +28,7 @@ public class Main extends Application {
 	public void start(Stage s) throws IOException {
 			stage = s;
 			Scene loginScene;
-			Parent root = FXMLLoader.load(getClass().getResource("GUI/Login.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("GUI/AdminPanel.fxml"));
 			root.setOnMousePressed(handlerPressed = new EventHandler<MouseEvent>() {
 	            @Override
 	            public void handle(MouseEvent event) {

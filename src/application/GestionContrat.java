@@ -2,7 +2,6 @@ package application;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -28,36 +28,57 @@ public class GestionContrat {
 
 	@FXML
 	private TextField codeContrat;
-	
+	@FXML
+	private ComboBox <String> comboReservation;
 	@FXML
 	private TextField rechercher;
-	
 	@FXML
 	private DatePicker dateContrat;
-	
 	@FXML
 	private DatePicker dateEcheance;
+	@FXML
+	private TextField infoReservation;
+	@FXML
+	private TextField infoDateC;
+	@FXML
+	private TextField infoDateE;
 	
 	// Table d'affichage
-		@FXML
-		private TableView<Contrat> tableview;
-		@FXML
-		private TableColumn<Contrat,String> code;
-		@FXML
-		private TableColumn<Contrat,?> dateC;
-		@FXML
-		private TableColumn<Contrat,?> dateE;
+	@FXML
+	private TableView<Contrat> tableview;
+	@FXML
+	private TableColumn<Contrat,String> code;
+	@FXML
+	private TableColumn<Contrat,String> reservation;
+	@FXML
+	private TableColumn<Contrat,?> dateC;
+	@FXML
+	private TableColumn<Contrat,?> dateE;
 	
 		
+	/*===================== Bouton de fermeture de la fenêtre =====================*/
 	public void exitButton() {
 		Main.stage.close();
 	}
 	
+	/*===================== Bouton de reduire la fenêtre =====================*/
+	public void minimizeButton() {
+		Main.stage.setIconified(true);
+	}
 	
-	
-	
- 
-	
+	/*===================== Liste des reservations dans le ComboBox =====================*/
+	public void choixReservation() throws SQLException {
+		String sql = "SELECT codeReservation FROM reservation;";
+		Connection C = Login.connectDB();
+		PreparedStatement PS = C.prepareStatement(sql);
+		ResultSet resultSet = PS.executeQuery();
+		comboReservation.getItems().removeAll(comboReservation.getItems());
+        while (resultSet.next()){  
+        	comboReservation.getItems().add(resultSet.getString(1)); 
+        }
+	}
+
+	/*===================== Charger l'interface "Ajouter un contrat" =====================*/
 	public void interfaceAjouterContrat(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/AjouterContrat.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -67,8 +88,10 @@ public class GestionContrat {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Bouton d'ajouter le contrat =====================*/
 	public void ajouterContrat(ActionEvent e) throws IOException, SQLException {
-		if( !codeContrat.getText().equals("") &&  dateContrat.getValue()!=null && dateEcheance.getValue()!=null ) 
+		if( !codeContrat.getText().equals("") && comboReservation.getValue()!=null &&  dateContrat.getValue()!=null && 
+				dateEcheance.getValue()!=null ) 
 		{
 			String cSql = "SELECT * FROM `contrat` WHERE codeContrat='"+codeContrat.getText()+"';";
 			Connection cC = Login.connectDB();
@@ -82,13 +105,14 @@ public class GestionContrat {
 			} 
 			else {
 				 
-				Contrat contrat = new Contrat(codeContrat.getText(), dateContrat.getValue(), dateEcheance.getValue());
-				String sql = "INSERT INTO `contrat`(`codeContrat`, `dateContrat`, `dateEcheance`) VALUES (?,?,?)";
+				Contrat contrat = new Contrat(codeContrat.getText(), comboReservation.getValue(), dateContrat.getValue(), dateEcheance.getValue());
+				String sql = "INSERT INTO `contrat`(`codeContrat`, `codeReservation`, `dateContrat`, `dateEcheance`) VALUES (?,?,?,?)";
 				Connection C = Login.connectDB();
 				PreparedStatement ps = C.prepareStatement(sql);
 				ps.setString(1, contrat.getCodeContrat());
-				ps.setObject(2, contrat.getDateContrat());
-				ps.setObject(3, contrat.getDateEcheance());
+				ps.setString(2, contrat.getCodeReservation());
+				ps.setObject(3, contrat.getDateContrat());
+				ps.setObject(4, contrat.getDateEcheance());
 				ps.executeUpdate();
 				C.close();
 				retourGestion();
@@ -107,6 +131,7 @@ public class GestionContrat {
 		}
 	}
 	
+	/*===================== Charger l'interface "Modifier/Supprimer un contrat" =====================*/
 	public void interfaceModifierContrat(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ModifierContrat.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -116,6 +141,7 @@ public class GestionContrat {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Bouton de rechercher un contrat par code (modifier/suppimer)=====================*/
 	public void rechercherContrat(ActionEvent e) throws SQLException {
 		rCode = rechercher.getText();
 		String sql = "SELECT * FROM `contrat` WHERE codeContrat='"+rCode+"';";
@@ -124,10 +150,9 @@ public class GestionContrat {
 		ResultSet result = ps.executeQuery();
 		if(result.next()) {
 			codeContrat.setText(result.getString(1));
-			Date sqlDateContrat=result.getDate(2);
-			dateContrat.setValue(sqlDateContrat.toLocalDate());
-			Date sqlDateEcheance = result.getDate(3);
-			dateEcheance.setValue(sqlDateEcheance.toLocalDate());
+			comboReservation.setValue(result.getString(2));
+			dateContrat.setValue(result.getDate(3).toLocalDate());
+			dateEcheance.setValue(result.getDate(4).toLocalDate());
 		}
 		else {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -138,9 +163,11 @@ public class GestionContrat {
 		C.close();
 	}
 	
+	/*===================== Bouton de modifier le contrat =====================*/
 	public void modifierContrat(ActionEvent e) throws IOException, SQLException {
-		if(!codeContrat.getText().equals("") &&  dateContrat.getValue()!=null && dateEcheance.getValue()!=null) {
-			
+		if( !codeContrat.getText().equals("") && comboReservation.getValue()!=null &&  dateContrat.getValue()!=null && 
+				dateEcheance.getValue()!=null ) 
+		{
 			Contrat contrat = new Contrat(codeContrat.getText(),"" ,dateContrat.getValue(),dateEcheance.getValue());
 			String sql = "SELECT `codeContrat` FROM `contrat` WHERE codeContrat='"+contrat.getCodeContrat()+"';";
 			Connection C = Login.connectDB();
@@ -153,13 +180,15 @@ public class GestionContrat {
 				alert.show();
 			}
 			else {
-				String sql2 = "UPDATE `contrat` SET `codeContrat`=?, `dateContrat`=?, `dateEcheance`=?  WHERE codeContrat=?;";
+				String sql2 = "UPDATE `contrat` SET `codeContrat`=?, `codeReservation`=?, `dateContrat`=?, `dateEcheance`=?  "
+						+ "WHERE codeContrat=?;";
 				Connection C2 = Login.connectDB();
 				PreparedStatement ps2 = C2.prepareStatement(sql2);
 				ps2.setString(1, contrat.getCodeContrat());
-				ps2.setObject(2, contrat.getDateContrat());
-				ps2.setObject(3, contrat.getDateEcheance());
-				ps2.setString(4, rechercher.getText());
+				ps2.setString(2, contrat.getCodeReservation());
+				ps2.setObject(3, contrat.getDateContrat());
+				ps2.setObject(4, contrat.getDateEcheance());
+				ps2.setString(5, rechercher.getText());
 				ps2.executeUpdate();
 				retourGestion();
 				Alert alert = new Alert(AlertType.INFORMATION);
@@ -176,6 +205,7 @@ public class GestionContrat {
 		}
 	}
 	
+	/*===================== Bouton de supprimer le contrat =====================*/
 	public void supprimerContrat(ActionEvent e) throws SQLException, IOException {
 		String sql = "DELETE FROM `contrat` WHERE codeContrat=?;";
 		Connection C = Login.connectDB();
@@ -190,6 +220,7 @@ public class GestionContrat {
 		alert.show();
 	}
 	
+	/*===================== Charger l'interface "informations d'un contrat" =====================*/
 	public void interfaceInfosContrat(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/InfosContrat.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -199,6 +230,29 @@ public class GestionContrat {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Bouton de rechercher un contrat par code (informations)=====================*/
+	public void infosContrat(ActionEvent e) throws SQLException {
+		rCode = rechercher.getText();
+		String sql = "SELECT * FROM `contrat` WHERE codeContrat='"+rCode+"';";
+		Connection C = Login.connectDB();
+		PreparedStatement ps = C.prepareStatement(sql);
+		ResultSet result = ps.executeQuery();
+		if(result.next()) {
+			codeContrat.setText(result.getString(1));
+			infoReservation.setText(result.getString(2));
+			infoDateC.setText(result.getDate(3).toString());
+			infoDateE.setText(result.getDate(4).toString());
+		}
+		else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Erreur");
+			alert.setHeaderText("Il n'y a aucun contrat avec ce CODE");
+			alert.show();			
+		}
+		C.close();
+	}
+	
+	/*===================== Charger l'interface "informations des contrats par ordre décroissant de la date" ==================*/
 	public void interfaceContratDecroissance(ActionEvent e) throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/ContratDecroissance.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -207,30 +261,31 @@ public class GestionContrat {
 		Main.stage.setScene(scene);
 		Main.stage.centerOnScreen();
 	}
+	
+	/*===================== Charger les données dans l'interface "Contrats par ordre décroissant de date" ====================*/
 	public void actualiser(ActionEvent e) throws SQLException {
 		ObservableList<Contrat> data = FXCollections.observableArrayList();	
-		String sql = "SELECT * FROM contrat ORDER BY dateContrat ;";
+		String sql = "SELECT * FROM contrat ORDER BY dateContrat DESC;";
 		Connection C = Login.connectDB();
-		PreparedStatement ps = (PreparedStatement)C.prepareStatement(sql);
+		PreparedStatement ps = C.prepareStatement(sql);
 		ResultSet result = ps.executeQuery(sql);
-		while(result.next())
-			{
+		while(result.next()){
 			Contrat contrat = new Contrat();
-				contrat.setCodeContrat(result.getString(1));
-				Date sqlDateContrat=result.getDate(2);
-				contrat.setDateContrat(sqlDateContrat.toLocalDate());
-				Date sqlDateEcheance=result.getDate(3);
-				contrat.setDateEcheance(sqlDateEcheance.toLocalDate());
-				data.add(contrat);
-			}
-				code.setCellValueFactory(new PropertyValueFactory<Contrat,String>("codeContrat"));
-				dateC.setCellValueFactory(new PropertyValueFactory<>("dateContrat"));
-				dateE.setCellValueFactory(new PropertyValueFactory<>("dateEcheance"));
-				
-				tableview.setItems(data);
+			contrat.setCodeContrat(result.getString(1));
+			contrat.setCodeReservation(result.getString(2));
+			contrat.setDateContrat(result.getDate(3).toLocalDate());
+			contrat.setDateEcheance(result.getDate(4).toLocalDate());
+			data.add(contrat);
+		}
+		code.setCellValueFactory(new PropertyValueFactory<Contrat,String>("codeContrat"));
+		reservation.setCellValueFactory(new PropertyValueFactory<Contrat,String>("codeReservation"));
+		dateC.setCellValueFactory(new PropertyValueFactory<>("dateContrat"));
+		dateE.setCellValueFactory(new PropertyValueFactory<>("dateEcheance"));
+		tableview.setItems(data);
 		C.close();
 	}
 	
+	/*===================== Bouton de retour au menu de gestion =====================*/
 	public void retourGestion() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/GestionContrat.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);
@@ -240,6 +295,7 @@ public class GestionContrat {
 		Main.stage.centerOnScreen();
 	}
 	
+	/*===================== Bouton de retour au menu principal =====================*/
 	public void retourMenu() throws IOException {
 		Parent root;
 		if(Main.ad) {
@@ -253,7 +309,5 @@ public class GestionContrat {
 		Scene scene = new Scene(root);
 		Main.stage.setScene(scene);
 		Main.stage.centerOnScreen();
-
 	}
-
 }
