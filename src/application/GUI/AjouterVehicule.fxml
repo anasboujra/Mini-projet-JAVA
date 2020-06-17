@@ -61,13 +61,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <DatePicker fx:id="dateMiseCirculation" layoutX="237.0" layoutY="415.0" prefHeight="27.0" prefWidth="235.0" />
-      <Label layoutX="26.0" layoutY="470.0" styleClass="Label" text="Parking">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Label>
-      <ComboBox fx:id="comboParking" layoutX="240.0" layoutY="470.0" onShown="#ajouterParking" prefHeight="27.0" prefWidth="235.0" visibleRowCount="3" />
+      <DatePicker fx:id="dateMiseCirculation" layoutX="237.0" layoutY="422.0" prefHeight="27.0" prefWidth="235.0" />
       <Button layoutX="282.0" layoutY="523.0" mnemonicParsing="false" onAction="#ajouterVehicule" prefHeight="26.0" prefWidth="112.0" styleClass="Button" text="Enregistrer" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />

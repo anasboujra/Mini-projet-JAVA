@@ -230,6 +230,7 @@ public class GestionContrat {
 				tableview.setItems(data);
 		C.close();
 	}
+	
 	public void retourGestion() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource(("GUI/GestionContrat.fxml")));
 		root.setOnMousePressed(Main.handlerPressed);

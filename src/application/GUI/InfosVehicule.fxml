@@ -75,18 +75,12 @@
          </font>
       </Label>
       <TextField fx:id="compteurKM" editable="false" layoutX="217.0" layoutY="390.0" prefHeight="32.0" prefWidth="235.0" styleClass="TextField" />
-      <Label layoutX="11.0" layoutY="443.0" styleClass="Label" text="Date de mise en circulation">
+      <Label layoutX="11.0" layoutY="449.0" styleClass="Label" text="Date de mise en circulation">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <DatePicker fx:id="dateMiseCirculation" disable="true" editable="false" layoutX="223.0" layoutY="441.0" prefHeight="27.0" prefWidth="235.0" />
-      <Label layoutX="16.0" layoutY="495.0" styleClass="Label" text="Parking">
-         <font>
-            <Font size="17.0" />
-         </font>
-      </Label>
-      <ComboBox fx:id="comboParking" disable="true" layoutX="223.0" layoutY="487.0" onShown="#ajouterParking" prefHeight="27.0" prefWidth="235.0" visibleRowCount="3" />
+      <DatePicker fx:id="dateMiseCirculation" disable="true" editable="false" layoutX="223.0" layoutY="447.0" prefHeight="27.0" prefWidth="235.0" />
       <Button layoutX="195.0" layoutY="537.0" mnemonicParsing="false" onAction="#retourGestion" prefHeight="38.0" prefWidth="112.0" styleClass="Button2" text="Annuler" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />

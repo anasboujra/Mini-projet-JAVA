@@ -60,7 +60,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="169.0" layoutY="364.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="363.0" styleClass="Button" text="Le nombre de places vides par parking">
+      <Button layoutX="169.0" layoutY="364.0" mnemonicParsing="false" onAction="#interfaceNombrePlacesVides" prefHeight="38.0" prefWidth="363.0" styleClass="Button" text="Le nombre de places vides par parking">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>

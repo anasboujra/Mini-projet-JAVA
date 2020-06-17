@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -33,8 +34,6 @@ public class GestionParking {
 	@FXML
 	private TextField rue;
 	@FXML
-	private ComboBox <String> ComboParking;
-	@FXML
 	private TextField arrondissement;
 	@FXML
 	private TextField rechercher;
@@ -42,22 +41,24 @@ public class GestionParking {
 	private ComboBox <String> comboVehicule;
 	@FXML
 	private ComboBox <String> comboParking;
+	@FXML
+	private Label placesVides;
 	
 	// Table d'affichage Vehicules par parking
-				@FXML
-				private TableView<Vehicule> tableView;
-				@FXML
-				private TableColumn<Vehicule,Integer> TableImmatriculation;
-				@FXML
-				private TableColumn<Vehicule,String> TableMarque;
-				@FXML
-				private TableColumn<Vehicule,String> TableType;
-				@FXML
-				private TableColumn<Vehicule,String> TableCarburant;
-				@FXML
-				private TableColumn<Vehicule,Integer> TableCompteurKM;
-				@FXML
-				private TableColumn<Vehicule,LocalDate> TableDateMiseCirculation;
+	@FXML
+	private TableView<Vehicule> tableView;
+	@FXML
+	private TableColumn<Vehicule,Integer> TableImmatriculation;
+	@FXML
+	private TableColumn<Vehicule,String> TableMarque;
+	@FXML
+	private TableColumn<Vehicule,String> TableType;
+	@FXML
+	private TableColumn<Vehicule,String> TableCarburant;
+	@FXML
+	private TableColumn<Vehicule,Integer> TableCompteurKM;
+	@FXML
+	private TableColumn<Vehicule,LocalDate> TableDateMiseCirculation;
 		
 		
 	public void exitButton() {
@@ -73,18 +74,16 @@ public class GestionParking {
 		Main.stage.centerOnScreen();
 	}
 	
-	public void AjouterParking() throws SQLException
-	{
+	public void ajouterParkings() throws SQLException {
 		String Parking = "SELECT nom FROM `parking`;";
 		Connection vC = Login.connectDB();
 		PreparedStatement vPS = vC.prepareStatement(Parking);
 		ResultSet resultSet = vPS.executeQuery();
-        while (resultSet.next())
-        {  
-            ComboParking.getItems().addAll(resultSet.getString(1)); 
-        	}
+        while (resultSet.next()){  
+            comboParking.getItems().addAll(resultSet.getString(1)); 
+        }
 	}
-	
+
 	public void ajouterParking(ActionEvent e) throws IOException, SQLException {
 		if(!nParking.getText().equals("") && !nomParking.getText().equals("") && !capaciteParking.getText().equals("") 
 				&& !rue.getText().equals("")  && !arrondissement.getText().equals("") ) 
@@ -229,6 +228,39 @@ public class GestionParking {
 		Main.stage.centerOnScreen();
 	}
 	
+	public void interfaceNombrePlacesVides(ActionEvent e) throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource(("GUI/NombrePlacesVides.fxml")));
+		root.setOnMousePressed(Main.handlerPressed);
+		root.setOnMouseDragged(Main.handlerDragged);
+		Scene scene = new Scene(root);
+		Main.stage.setScene(scene);
+		Main.stage.centerOnScreen();
+	}
+	
+	public int nombrePlacesVides(String nom) throws SQLException {
+		String npSQL = "SELECT capacite FROM parking WHERE nom=?;";
+		Connection C = Login.connectDB();
+		PreparedStatement npPS = C.prepareStatement(npSQL);
+		npPS.setString(1, nom);
+		ResultSet result = npPS.executeQuery();
+		result.next();
+		int capacite = result.getInt(1);
+		String vSQL = "SELECT * FROM vehicule WHERE parking=?;";
+		PreparedStatement vPS = C.prepareStatement(vSQL);
+		vPS.setString(1, nom);
+		ResultSet vResult = vPS.executeQuery();
+		int nVehicules = 0;
+		while(vResult.next()) {
+			nVehicules++;
+		}
+		return capacite-nVehicules;
+	}
+	
+	public void afficherNombrePlacesVides() throws SQLException {
+		int n = nombrePlacesVides(comboParking.getValue());
+		placesVides.setText("Le nombre de places vides dans ce parking: "+n);
+	}
+	
 	public void vehiculeADeposer() throws SQLException {
 		String sql = "SELECT numImmatriculation FROM vehicule WHERE parking='Aucun';";
 		Connection C = Login.connectDB();
@@ -252,7 +284,19 @@ public class GestionParking {
 	}
 	
 	public void deposerVehicule(ActionEvent e) throws SQLException, IOException {
-		if(comboVehicule.getValue()!=null && comboParking.getValue()!=null) {
+		if(comboVehicule.getValue()==null || comboParking.getValue()==null) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Erreur");
+			alert.setHeaderText("Veuillez remplir tous les champs");
+			alert.show();
+		}
+		else if(nombrePlacesVides(comboParking.getValue())<1) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Erreur");
+			alert.setHeaderText("Le parking est plein");
+			alert.show();
+		}
+		else {
 			String sql = "UPDATE vehicule SET parking=? where numImmatriculation=?;";
 			Connection C = Login.connectDB();
 			PreparedStatement ps = C.prepareStatement(sql);
@@ -264,12 +308,6 @@ public class GestionParking {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Succès");
 			alert.setHeaderText("Les données ont été enregistrées");
-			alert.show();
-		}
-		else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Erreur");
-			alert.setHeaderText("Veuillez remplir tous les champs");
 			alert.show();
 		}
 	}
@@ -337,7 +375,7 @@ public class GestionParking {
 	}
 	
 	public void selectionner(ActionEvent e) throws SQLException {
-		String search = ComboParking.getValue();
+		String search = comboParking.getValue();
 		ObservableList<Vehicule> data = FXCollections.observableArrayList();	
 		String sql = "SELECT * FROM `vehicule` WHERE `parking` ='"+search+"';";
 		Connection C = Login.connectDB();

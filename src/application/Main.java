@@ -49,7 +49,6 @@ public class Main extends Application {
 			stage.initStyle(StageStyle.UNDECORATED);
 			stage.show();
 			stage.centerOnScreen();
-
 	}
 	
 	
